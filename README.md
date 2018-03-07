@@ -1,5 +1,5 @@
-# Simple Chat
-This is a simple chat server and client written in Node using Socket.io
+# Cat Chat
+This is a simple chat server and client written in Node using Socket.io.
 
 ## Installation
 
