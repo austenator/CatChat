@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Simple Chat Engine</title>
+    <link href="simple-chat.css" type="text/css" rel="stylesheet">
+  </head>
+  <body>
+    <aside id="chat-panel">
+      <h1>Simple Chat Engine</h1>
+      <ul id="message-log">
+      </ul>
+      <div id="chat-controls">
+        <input type="text" id="chat-text"></input>
+        <button id="chat-send">Send</button>
+        <label for="color">Color</label>
+        <select id="color">
+          <option value="gray" selected>gray</option>
+          <option value="red">red</option>
+          <option value="blue">blue</option>
+          <option value="purple">purple</option>
+        </select>
+      </div>
+    </aside>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="simple-chat.js"></script>
+  </body>
+</html>
