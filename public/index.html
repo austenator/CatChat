@@ -5,24 +5,30 @@
     <link href="simple-chat.css" type="text/css" rel="stylesheet">
   </head>
   <body>
-    <aside id="chat-panel">
-      <h1>Cat Chat</h1>
+    <div id="chat-panel">
+      <div class="page-header">
+        <h1>Cat Chat</h1>
+      </div>
       <ul id="message-log">
       </ul>
       <div id="chat-controls">
-        <input type="text" id="chat-text"></input>
-        <button id="chat-send">Send</button>
-        <label for="color">Color</label>
-        <select id="color">
-          <option value="gray" selected>gray</option>
-          <option value="red">red</option>
-          <option value="blue">blue</option>
-          <option value="purple">purple</option>
-        </select>
+        <form class="form-inline">
+          <div class="form-group">
+            <label for="chat-text">Chat:</label>
+            <input type="text" class="form-control" id="chat-text">
+            <button id="chat-send" type="button" class="btn">Send</button>
+          </div>
+        </form>
       </div>
-    </aside>
+    </div>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script src="simple-chat.js"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   </body>
 </html>

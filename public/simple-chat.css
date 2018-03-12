@@ -1,6 +1,10 @@
 #chat-panel {
-  width: 480px;
+  width: 800px;
+  /* height: 100vh; */
   height: 100vh;
+  margin: 0 auto;
+  padding:15px;
+  background-color: gray;
 }
 
 #chat-panel > h1 {
