@@ -2,23 +2,6 @@
 
 /* Chat shit */
 
-#chat-panel {
-  /* width: 800px; */
-  /* height: 50vh; */
-  /* height: 500px; */
-  /* margin: 0 auto; */
-  /* padding:15px; */
-  /* background-color: gray; */
-}
-
-/* #chat-panel > h1 {
-  height: 5%;
-} */
-
-/* #chat-controls {
-  height: 10%;
-} */
-
 #message-log {
   list-style-type: none;
   padding: 0 1rem;
