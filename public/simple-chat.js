@@ -35,7 +35,7 @@ socket.on('message', function(message){
   var li = $('<li>')
     .appendTo('#message-log');
   $('<strong>')
-    .text(message.user)
+    .text(message.user + " in " + message.room)
     .appendTo(li)
     .css('padding-right', '1rem');
   $('<span>')
@@ -47,4 +47,24 @@ $('#chat-send').on('click', function(){
   var text = $('#chat-text').val();
   socket.emit('message', text);
   $('#chat-text').val('');
+});
+
+$('#class-A').on('click', function(){
+  var room = "Class A";
+  socket.emit('room', room)
+});
+
+$('#class-B').on('click', function(){
+  var room = "Class B";
+  socket.emit('room', room)
+});
+
+$('#class-C').on('click', function(){
+  var room = "Class C";
+  socket.emit('room', room)
+});
+
+$('#class-D').on('click', function(){
+  var room = "Class D";
+  socket.emit('room', room)
 });

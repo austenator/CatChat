@@ -25,3 +25,7 @@ ul#message-log > li.welcome-message {
 ul#message-log > li.system-message {
   background-color: #ccc;
 }
+
+li.list-group-item {
+  cursor: pointer;
+}

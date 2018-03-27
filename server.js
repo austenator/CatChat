@@ -26,6 +26,7 @@ io.on('connection', function(socket){
   // Set the user properties
   var name = 'User ' + connected;
   var color = 'gray';
+  var room = 'Room A';
 
   // Count the user
   connected++;
@@ -39,6 +40,7 @@ io.on('connection', function(socket){
     io.emit('message', {
       user: name,
       text: text,
+      room: room,
       color: color
     });
   });
@@ -47,6 +49,10 @@ io.on('connection', function(socket){
   // thier color
   socket.on('color', function(newColor) {
     color = newColor;
+  });
+
+  socket.on('room', function(newRoom) {
+    room = newRoom;
   });
 
   // Add an event handler for when the user leaves
