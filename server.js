@@ -26,7 +26,7 @@ io.on('connection', function(socket){
   // Set the user properties
   var name = 'User ' + connected;
   var color = 'gray';
-  var room = 'Room A';
+  var room = 'Class A';
 
   // Count the user
   connected++;
@@ -53,6 +53,14 @@ io.on('connection', function(socket){
 
   socket.on('room', function(newRoom) {
     room = newRoom;
+    io.emit('changed-room', name, room)
+  });
+
+  socket.on('name', function(newName)
+  {
+    var oldName = name;
+    name = newName;
+    io.emit('changed-name', oldName, newName);
   });
 
   // Add an event handler for when the user leaves
@@ -64,7 +72,7 @@ io.on('connection', function(socket){
   // Send a welcome message to the user
   var welcomeMessage = "<strong>Welcome " + name + "!</strong>";
   welcomeMessage += " Check out the <a href='https://github.com/zombiepaladin/simple-chat'>repo</a>";
-  socket.emit('welcome', welcomeMessage);
+  socket.emit('welcome', welcomeMessage, name);
 });
 
 /** @function handleRequest
