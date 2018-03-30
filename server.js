@@ -25,7 +25,6 @@ var connected = 0;
 io.on('connection', function(socket){
   // Set the user properties
   var name = 'User ' + connected;
-  var color = 'gray';
 
   // Count the user
   connected++;
@@ -38,15 +37,8 @@ io.on('connection', function(socket){
   socket.on('message', function(text) {
     io.emit('message', {
       user: name,
-      text: text,
-      color: color
+      text: text
     });
-  });
-
-  // Add an event handler for when the user changes
-  // thier color
-  socket.on('color', function(newColor) {
-    color = newColor;
   });
 
   // Add an event handler for when the user leaves
@@ -57,7 +49,7 @@ io.on('connection', function(socket){
 
   // Send a welcome message to the user
   var welcomeMessage = "<strong>Welcome " + name + "!</strong>";
-  welcomeMessage += " Check out the <a href='https://github.com/zombiepaladin/simple-chat'>repo</a>";
+  welcomeMessage += " Check out the <a href='https://github.com/austenator/CatChat'>repo.</a>";
   socket.emit('welcome', welcomeMessage);
 });
 

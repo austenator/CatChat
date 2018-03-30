@@ -33,14 +33,9 @@ socket.on('left', function(name) {
 // the user's name.
 socket.on('message', function(message){
   var li = $('<li>')
-    .appendTo('#message-log');
-  $('<strong>')
-    .text(message.user)
-    .appendTo(li)
-    .css('padding-right', '1rem');
-  $('<span>')
     .text(message.text)
-    .appendTo(li);
+    .addClass('user-message')
+    .appendTo('#message-log');
 });
 
 $('#chat-send').on('click', function(){
