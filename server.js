@@ -88,6 +88,22 @@ function handleRequest(req, res) {
         res.end(data);
       });
       break;
+      // Serve the logo
+      case '/images/logo_1.png':
+        fs.readFile('public/images/logo_1.png', function(err, data){
+          if(err){
+            console.error("Could not get logo!" + err);
+            res.statusCode = 500;
+            res.end();
+          }
+          res.setHeader("Content-Type", "image/png");
+          res.end(data);
+        });
+        break;
+      default:
+        res.setHeader("Content-Type", "text/plain");
+        res.statusCode = 404;
+        res.end("Resource Could Not Be Found!");
   }
 }
 

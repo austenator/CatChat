@@ -4,28 +4,40 @@ var socket = io();
 // Listen for welcome messages, and append
 // them to the message log
 socket.on('welcome', function(html){
-  $('<li>')
+  var li = $('<li>')
+    .addClass('welcome-message');
+
+  $('<span>')
     .html(html)
-    .addClass('welcome-message')
-    .appendTo('#message-log');
+    .appendTo(li);
+
+  li.appendTo('#message-log');
 });
 
 // Listen for join messages, and append them
 // to the message log
 socket.on('joined', function(name) {
-  $('<li>')
+  var li = $('<li>')
+    .addClass('system-message');
+
+  $('<span>')
     .text(name + " joined!")
-    .addClass('system-message')
-    .appendTo('#message-log');
+    .appendTo(li);
+
+  li.appendTo('#message-log');
 });
 
 // Listen for left messages, and append them
 // to the message log
 socket.on('left', function(name) {
-  $('<li>')
+  var li = $('<li>')
+    .addClass('system-message');
+
+  $('<span>')
     .text(name + " left!")
-    .addClass('system-message')
-    .appendTo('#message-log');
+    .appendTo(li);
+
+  li.appendTo('#message-log');
 });
 
 // Listen for incoming chat messages, and append
@@ -33,9 +45,13 @@ socket.on('left', function(name) {
 // the user's name.
 socket.on('message', function(message){
   var li = $('<li>')
+    .addClass('user-message');
+
+  $('<span>')
     .text(message.text)
-    .addClass('user-message')
-    .appendTo('#message-log');
+    .appendTo(li);
+
+  li.appendTo('#message-log');
 });
 
 $('#chat-send').on('click', function(){
