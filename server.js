@@ -3,7 +3,7 @@
  */
 
 // Constants
-const PORT = 3000;
+const PORT = 8001;
 
 // Requires
 var fs = require('fs');
