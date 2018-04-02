@@ -3,8 +3,9 @@
  */
 
 // Constants
-// const PORT = process.env.PORT || 3000;
-const PORT = 8001;
+// const PORT = process.env.PORT || 8080;
+const PORT = 8080;
+
 // Requires
 var fs = require('fs');
 var express = require('express');
@@ -22,8 +23,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 // });
 
 // Listen
-server.listen(PORT, 'catchat.cs.ksu.edu',function () {
-  console.log('Server listening at %d', PORT);
+server.listen(PORT, function () {
+  console.log('Server listening at port %d.', PORT);
 });
 
 // Track how many users have connected
