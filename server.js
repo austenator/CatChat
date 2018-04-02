@@ -54,8 +54,8 @@ io.on('connection', function(socket){
     color = newColor;
   });
 
-  socket.on('room', function(newRoom) {
-    roomId = newRoom;
+  socket.on('room', function(newRoomId) {
+    roomId = newRoomId;
     io.emit('changed-room', name, roomId)
   });
 

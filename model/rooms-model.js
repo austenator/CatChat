@@ -17,7 +17,8 @@ function getRooms() {
     // Clone and return the student object
     return JSON.parse(JSON.stringify(rooms));
 }
-  
+
+
 function addRoom(room, callback) {
     // Escape any html in the student object
     var sanitizedRoom = {
