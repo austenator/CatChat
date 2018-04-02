@@ -3,8 +3,8 @@
  */
 
 // Constants
-const PORT = process.env.PORT || 80;
-
+// const PORT = process.env.PORT || 3000;
+const PORT = 8001;
 // Requires
 var fs = require('fs');
 var express = require('express');
@@ -16,14 +16,14 @@ var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 
 // Routing
-app.use(express.static(path.join(__dirname, 'node_modules')));
-app.get('/', function(req, res){
-  res.sendFile(path.join(__dirname,'/public','/index.html'));
-});
+app.use(express.static(path.join(__dirname, 'public')));
+// app.get('/', function(req, res){
+//   res.sendFile(path.join(__dirname,'/public','/index.html'));
+// });
 
 // Listen
-server.listen(PORT, function () {
-  console.log('Server listening at port %d', PORT);
+server.listen(PORT, 'catchat.cs.ksu.edu',function () {
+  console.log('Server listening at %d', PORT);
 });
 
 // Track how many users have connected
