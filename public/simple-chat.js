@@ -1,6 +1,6 @@
 // Create the socket.io client
 var socket = io();
-var room = "Class A";
+var roomId = "lobby";
 
 // Listen for welcome messages, and append
 // them to the message log
@@ -10,6 +10,11 @@ socket.on('welcome', function(html, name){
     .addClass('welcome-message')
     .appendTo('#message-log');
   $('#user-name').val(name);
+});
+
+socket.on('room-list', function(html){
+  $('#room-list').html(html);
+  
 });
 
 // Listen for join messages, and append them
@@ -34,12 +39,12 @@ socket.on('left', function(name) {
 // them to the message log, applying styles and
 // the user's name.
 socket.on('message', function(message){
-  if (message.room == room)
+  if (message.roomId == roomId)
   {
     var li = $('<li>')
       .appendTo('#message-log');
     $('<strong>')
-      .text(message.user + " in " + message.room)
+      .text(message.user + " in " + message.roomId)
       .appendTo(li)
       .css('padding-right', '1rem');
     $('<span>')
@@ -54,12 +59,24 @@ $('#chat-send').on('click', function(){
   $('#chat-text').val('');
 });
 
-$('#class-A').on('click', function(){
+
+$('#room-list').on('click', 'li.chatroom', function (event) {
+  var clickedRoom = event.target.id;
+  console.log(clickedRoom);
+
+  if (clickedRoom != "")
+  {
+    roomId = clickedRoom;
+    socket.emit('room', roomId)
+  }
+});
+
+$('#class-a').on('click', function(){
   room = "Class A";
   socket.emit('room', room)
 });
 
-$('#class-B').on('click', function(){
+$('#class-b').on('click', function(){
   room = "Class B";
   socket.emit('room', room)
 });
@@ -95,3 +112,4 @@ socket.on('changed-name', function(oldName, newName) {
     .addClass('system-message')
     .appendTo('#message-log');
 });
+

@@ -10,6 +10,9 @@ var fs = require('fs');
 var http = require('http');
 var server = new http.Server(handleRequest);
 
+var roomController = require('./controller/rooms-controller.js');
+//var lobby = roomController.getLobby();
+
 // Create the socket.io object.  By passing it
 // the webserver, it will automatically handle
 // requests for /socket.io/socket.io.js and to
@@ -26,7 +29,7 @@ io.on('connection', function(socket){
   // Set the user properties
   var name = 'User ' + connected;
   var color = 'gray';
-  var room = 'Class A';
+  var roomId = 'lobby';
 
   // Count the user
   connected++;
@@ -40,7 +43,7 @@ io.on('connection', function(socket){
     io.emit('message', {
       user: name,
       text: text,
-      room: room,
+      roomId: roomId,
       color: color
     });
   });
@@ -52,8 +55,8 @@ io.on('connection', function(socket){
   });
 
   socket.on('room', function(newRoom) {
-    room = newRoom;
-    io.emit('changed-room', name, room)
+    roomId = newRoom;
+    io.emit('changed-room', name, roomId)
   });
 
   socket.on('name', function(newName)
@@ -73,6 +76,8 @@ io.on('connection', function(socket){
   var welcomeMessage = "<strong>Welcome " + name + "!</strong>";
   welcomeMessage += " Check out the <a href='https://github.com/zombiepaladin/simple-chat'>repo</a>";
   socket.emit('welcome', welcomeMessage, name);
+
+  socket.emit('room-list', roomController.list());
 });
 
 /** @function handleRequest
@@ -85,11 +90,11 @@ function handleRequest(req, res) {
     // Serve the index file
     case '/':
     case '/index.html':
-      fs.readFile('public/index.html', function(err, data){
+      fs.readFile('public/index.html', function(err, html){
         if(err){
         }
         res.setHeader("Content-Type", "text/html");
-        res.end(data);
+        res.end(html);
       });
       break;
     // Serve the css file
