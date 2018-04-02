@@ -3,7 +3,7 @@
  */
 
 // Constants
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 80;
 
 // Requires
 var fs = require('fs');
@@ -18,7 +18,7 @@ var io = require('socket.io')(server);
 // Routing
 app.use(express.static(path.join(__dirname, 'node_modules')));
 app.get('/', function(req, res){
-  res.sendFile(__dirname + '/public' + '/index.html');
+  res.sendFile(path.join(__dirname,'/public','/index.html'));
 });
 
 // Listen
