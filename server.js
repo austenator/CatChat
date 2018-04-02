@@ -100,6 +100,31 @@ function handleRequest(req, res) {
           res.end(data);
         });
         break;
+      case '/images/favicon-16x16.png':
+        fs.readFile('public/images/favicon-16x16.png', function(err, data){
+          if(err){
+            console.error("Could not get favicon!" + err);
+            res.statusCode = 500;
+            res.end();
+          }
+          console.log("Got favicon!");
+          res.setHeader("Content-Type", "image/png");
+          res.end(data);
+        });
+        break;
+        case '/images/favicon-32x32.png':
+          fs.readFile('public/images/favicon-32x32.png', function(err, data){
+            if(err){
+              console.error("Could not get favicon!" + err);
+              res.statusCode = 500;
+              res.end();
+            }
+            console.log("Got favicon!");
+            res.setHeader("Content-Type", "image/png");
+            res.end(data);
+          });
+          console.log("passed got favicon!");
+          break;
       default:
         res.setHeader("Content-Type", "text/plain");
         res.statusCode = 404;
