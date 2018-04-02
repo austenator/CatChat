@@ -23,9 +23,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 // });
 
 // Listen
-server.listen(PORT, function () {
-  console.log('Server listening at port %d.', PORT);
-});
+server.listen();
+//PORT, function () {
+//   console.log('Server listening at port %d.', PORT);
+// });
 
 // Track how many users have connected
 var connected = 0;
