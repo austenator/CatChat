@@ -3,8 +3,8 @@
  */
 
 // Constants
-// const PORT = process.env.PORT || 8080;
-const PORT = 80;
+const PORT = process.env.PORT || 80;
+// const PORT = 3000;
 
 // Requires
 var fs = require('fs');
@@ -14,12 +14,12 @@ var path = require('path');
 // Set up server
 var app = express();
 var server = require('http').createServer(app);
-var io = require('socket.io')(server);
+var io = require('socket.io').listen(server);
 
 // Routing
 app.use(express.static(path.join(__dirname, 'public')));
-// app.get('/', function(req, res){
-//   res.sendFile(path.join(__dirname,'/public','/index.html'));
+// app.get('/socket.io/socket.io.js', function(req, res){
+//   res.sendFile(path.join(__dirname,'/index.html'));
 // });
 
 // Listen
