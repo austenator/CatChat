@@ -3,15 +3,20 @@
 // Create the socket.io client
 var socket = io();
 var roomId = "lobby";
+var userName =  $('#user-name').val();
+console.log("Init: " + roomId);
+
 
 // Listen for welcome messages, and append
 // them to the message log
 socket.on('welcome', function(html, name){
+  console.log("Welcome recieved: "+ name);
   $('<li>')
     .html(html)
     .addClass('welcome-message')
     .appendTo('#message-log');
   $('#user-name').val(name);
+  userName = name;
 });
 
 socket.on('room-list', function(html){
@@ -62,11 +67,13 @@ $('#chat-send').on('click', function(){
 });
 
 
+// When the user clicks on the room list, this handles the change.
+// KNOWN BUG: (event) is empty in 4 out of 5 clicks. Not sure why
 $('#room-list').on('click', 'li.chatroom', function (event) {
   var clickedRoom = event.target.id;
-  console.log(clickedRoom);
+  console.log("Changing rooms: " + clickedRoom);
 
-  if (clickedRoom != "")
+  if (clickedRoom != "" && clickedRoom != roomId)
   {
     roomId = clickedRoom;
     socket.emit('room', roomId)
@@ -74,6 +81,7 @@ $('#room-list').on('click', 'li.chatroom', function (event) {
 });
 
 socket.on('changed-room', function(name, oldRoomId, newRoomId, roomName) {
+  console.log("Room change: "+ name +", "+ oldRoomId +", "+ newRoomId +", "+ roomName);
   if (roomId == oldRoomId || roomId == newRoomId)
   {
     $('<li>')
@@ -81,16 +89,25 @@ socket.on('changed-room', function(name, oldRoomId, newRoomId, roomName) {
       .addClass('system-message')
       .appendTo('#message-log');
   }
+
+  if (name == userName)
+  {
+    $('#current-room').html(roomName);
+  }
+
 });
 
 
 
 $('#set-name').on('click', function() {
-  var newName = $('#user-name').val();
-  socket.emit('name', newName);
+  console.log("Changing name: " + userName + ", " + $('#user-name').val());
+  userName = $('#user-name').val();
+  socket.emit('name', userName);
+  
 });
 
 socket.on('changed-name', function(oldName, newName) {
+  console.log("Name Changed: " + oldName + ", " + newName);
   $('<li>')
     .text(oldName + " changed name to "+ newName + "!")
     .addClass('system-message')
