@@ -19,6 +19,8 @@ socket.on('welcome', function(html, name){
   userName = name;
 });
 
+// Server has sent a new room list.
+// update the list accordingly.
 socket.on('room-list', function(html){
   $('#room-list').html(html);
   
@@ -60,10 +62,14 @@ socket.on('message', function(message){
   }
 });
 
+// User wants to send a message. if its not blank, send it.
 $('#chat-send').on('click', function(){
   var text = $('#chat-text').val();
-  socket.emit('message', text);
-  $('#chat-text').val('');
+  if (text != "")
+  {
+    socket.emit('message', text);
+    $('#chat-text').val('');
+  }
 });
 
 
@@ -80,6 +86,9 @@ $('#room-list').on('click', 'li.chatroom', function (event) {
   }
 });
 
+// The server has stated that someone has changed a room.
+// if the current user is in either the new or old room, display a message.
+// if the current user is the one who moved, update the page to show the name.
 socket.on('changed-room', function(name, oldRoomId, newRoomId, roomName) {
   console.log("Room change: "+ name +", "+ oldRoomId +", "+ newRoomId +", "+ roomName);
   if (roomId == oldRoomId || roomId == newRoomId)
@@ -98,14 +107,26 @@ socket.on('changed-room', function(name, oldRoomId, newRoomId, roomName) {
 });
 
 
-
+// User wants to change their name
+// if name is not blank, and if name is different, send it
+// else reset name box
 $('#set-name').on('click', function() {
-  console.log("Changing name: " + userName + ", " + $('#user-name').val());
-  userName = $('#user-name').val();
-  socket.emit('name', userName);
+  var newName = $('#user-name').val();
+  console.log("Changing name: " + userName + ", " + newName);
+  if (newName != "" && newName != userName)
+  {
+    userName = newName;
+    socket.emit('name', userName);
+  }
+  else 
+  {
+    $('#user-name').val(userName);
+  }
   
 });
 
+// A user has changed their name, display message.
+// TODO, only show changes for users in this user's room.
 socket.on('changed-name', function(oldName, newName) {
   console.log("Name Changed: " + oldName + ", " + newName);
   $('<li>')
