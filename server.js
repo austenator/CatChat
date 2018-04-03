@@ -44,6 +44,7 @@ io.on('connection', function(socket){
       user: name,
       text: text,
       roomId: roomId,
+      roomName: roomController.getRoomById(roomId).name,
       color: color
     });
   });
@@ -55,8 +56,10 @@ io.on('connection', function(socket){
   });
 
   socket.on('room', function(newRoomId) {
+    var roomObject = roomController.getRoomById(newRoomId);
+    var roomName = roomObject.name;
+    io.emit('changed-room', name, roomId, newRoomId, roomName);
     roomId = newRoomId;
-    io.emit('changed-room', name, roomId)
   });
 
   socket.on('name', function(newName)

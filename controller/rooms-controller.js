@@ -3,6 +3,7 @@ const roomModel = require('../model/rooms-model');
 module.exports = {
     list: list,
     getLobby: getLobby,
+    getRoomById: getRoomById,
     create: create
 }
 
@@ -23,6 +24,30 @@ function getLobby() {
     var rooms = roomModel.getRooms();
     return rooms[0];
 }
+
+function getRoomById(desiredId) {
+    var rooms = roomModel.getRooms();
+    var desiredIndex = -1;
+
+    for (var i = 0; i < rooms.length; i++)
+    {
+        if (rooms[i].id == desiredId)
+        {
+            desiredIndex = i;
+            break;
+        }
+    }
+    if (i != -1)
+    {
+        return rooms[i];
+    }
+    else
+    {
+        return 0;
+    }
+
+}
+
 
   /** @function create
     * Creates a new room

@@ -1,3 +1,5 @@
+//This is basically the Client side scripts
+
 // Create the socket.io client
 var socket = io();
 var roomId = "lobby";
@@ -44,7 +46,7 @@ socket.on('message', function(message){
     var li = $('<li>')
       .appendTo('#message-log');
     $('<strong>')
-      .text(message.user + " in " + message.roomId)
+      .text(message.user + " in " + message.roomName)
       .appendTo(li)
       .css('padding-right', '1rem');
     $('<span>')
@@ -71,32 +73,14 @@ $('#room-list').on('click', 'li.chatroom', function (event) {
   }
 });
 
-$('#class-a').on('click', function(){
-  room = "Class A";
-  socket.emit('room', room)
-});
-
-$('#class-b').on('click', function(){
-  room = "Class B";
-  socket.emit('room', room)
-});
-
-$('#class-C').on('click', function(){
-  room = "Class C";
-  socket.emit('room', room)
-});
-
-$('#class-D').on('click', function(){
-  room = "Class D";
-  socket.emit('room', room)
-});
-
-
-socket.on('changed-room', function(name, room) {
-  $('<li>')
-    .text(name + " changed to "+ room + "!")
-    .addClass('system-message')
-    .appendTo('#message-log');
+socket.on('changed-room', function(name, oldRoomId, newRoomId, roomName) {
+  if (roomId == oldRoomId || roomId == newRoomId)
+  {
+    $('<li>')
+      .text(name + " changed to "+ roomName + "!")
+      .addClass('system-message')
+      .appendTo('#message-log');
+  }
 });
 
 
