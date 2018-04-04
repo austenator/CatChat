@@ -4,6 +4,11 @@
   margin-bottom: 20px;
 }
 
+.jumbotron.jumbotron-fluid{
+  padding-top: 20px;
+  padding-bottom: 10px;
+}
+
 /* Chat shit */
 #message-log {
   list-style-type: none;
@@ -47,6 +52,11 @@ ul#message-log > li span {
   color: white;
   border-radius: 1rem 1rem 0 1rem;
   text-align: right;
+}
+
+#set-name-controls {
+  margin: 24px;
+  max-width: 350px;
 }
 
 li.list-group-item {
