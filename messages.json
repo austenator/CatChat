@@ -1,0 +1,23 @@
+[
+    {
+        "user": "User 0",
+        "roomId": "lobby",
+        "roomName": "Lobby",
+        "text": "Test",
+        "color": "gray"
+    },
+    {
+        "user": "User 0",
+        "roomId": "class-b",
+        "roomName": "Class B",
+        "text": "jffhgf",
+        "color": "gray"
+    },
+    {
+        "user": "User 1",
+        "roomId": "lobby",
+        "roomName": "Lobby",
+        "text": "resfg",
+        "color": "gray"
+    }
+]

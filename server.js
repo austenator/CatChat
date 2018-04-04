@@ -11,7 +11,7 @@ var http = require('http');
 var server = new http.Server(handleRequest);
 
 var roomController = require('./controller/rooms-controller.js');
-//var lobby = roomController.getLobby();
+var messagesController = require('./controller/messages-controller.js');
 
 // Create the socket.io object.  By passing it
 // the webserver, it will automatically handle
@@ -40,13 +40,16 @@ io.on('connection', function(socket){
   // Add an event handler for when the user sends
   // us a message
   socket.on('message', function(text) {
-    io.emit('message', {
+    var message = {
       user: name,
       text: text,
       roomId: roomId,
       roomName: roomController.getRoomById(roomId).name,
       color: color
-    });
+    };
+    
+    io.emit('message', message);
+    messagesController.storeMessage(message);
   });
 
   // Add an event handler for when the user changes
