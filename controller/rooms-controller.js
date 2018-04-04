@@ -2,12 +2,28 @@ const roomModel = require('../model/rooms-model');
 
 module.exports = {
     list: list,
+    htmlList: htmlList,
     getLobby: getLobby,
     getRoomById: getRoomById,
     create: create
 }
 
 function list() {
+  var rooms = roomModel.getRooms();
+  var list = [];
+
+  for (var i = 0; i < rooms.length; i++)
+  {
+      var r = {
+          id: rooms[i].id,
+          name: rooms[i].name
+      };
+      list.push(r);
+  }
+  return list;
+}
+
+function htmlList() {
     var rooms = roomModel.getRooms();
     var html = "<ul  class=\"list-group-flush px-0\">";
     html += rooms.map(function(item) {
