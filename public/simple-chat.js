@@ -1,5 +1,5 @@
 // Create the socket.io client
-var socket = io.connect('http://catchat.cs.ksu.edu');
+var socket = io();
 
 // Listen for welcome messages, and append
 // them to the message log

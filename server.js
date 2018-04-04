@@ -17,9 +17,6 @@ var io = require('socket.io').listen(server);
 
 // Routing
 app.use(express.static(path.join(__dirname, 'public')));
-// app.get('/socket.io/socket.io.js', function(req, res){
-//   res.sendFile(path.join(__dirname,'/index.html'));
-// });
 
 // Listen
 server.listen(PORT, function () {
