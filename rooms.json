@@ -1,0 +1,57 @@
+[
+    {
+        "id":"lobby",
+        "name":"Lobby",
+        "description":"Home",
+        "monday":"",
+        "tuesday":"",
+        "wednesday":"",
+        "thurday":"",
+        "friday":"",
+        "lab":""
+    },
+    {
+        "id":"class-a",
+        "name":"Class A",
+        "description":"Example Class",
+        "monday":"",
+        "tuesday":"",
+        "wednesday":"",
+        "thurday":"",
+        "friday":"",
+        "lab":""
+    },
+    {
+        "id":"class-b",
+        "name":"Class B",
+        "description":"Example Class",
+        "monday":"",
+        "tuesday":"",
+        "wednesday":"",
+        "thurday":"",
+        "friday":"",
+        "lab":""
+    },
+    {
+        "id":"class-c",
+        "name":"Class C",
+        "description":"Example Class",
+        "monday":"",
+        "tuesday":"",
+        "wednesday":"",
+        "thurday":"",
+        "friday":"",
+        "lab":""
+    },
+    {
+        "id":"class-d",
+        "name":"Class D",
+        "description":"Example Class",
+        "monday":"",
+        "tuesday":"",
+        "wednesday":"",
+        "thurday":"",
+        "friday":"",
+        "lab":""
+    }
+]

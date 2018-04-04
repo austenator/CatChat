@@ -18,22 +18,29 @@
 
       </div>
     </div>
+    <div >
+      <form >
+        <label for="user-name">User Name:</label>
+        <input id="user-name" type="text"/>
+        <input id="set-name" type="submit" value="Set"/>
+      </form>
+    </div>
     <div class="container border rounded m-4" id="chat-panel">
       <div class="row">
         <div class="col-4 border">
           <p class="text-dark">List of Class Chatrooms:</p>
         </div>
         <div class="col border">
-          <p class="text-dark">Chat:</p>
+          <p class="text-dark">Chat: <span id="current-room">Lobby</span></p>
         </div>
       </div>
       <div class="row">
-        <div class="col-4 bg-light border px-0">
+        <div class="col-4 bg-light border px-0" id="room-list">
             <ul class="list-group-flush px-0">
-              <li class="list-group-item"><p>Class A</p></li>
-              <li class="list-group-item"><p>Class B</p></li>
-              <li class="list-group-item"><p>Class C</p></li>
-              <li class="list-group-item"><p>Class D</p></li>
+              <li class="list-group-item" id="class-A"><p>Class A</p></li>
+              <li class="list-group-item" id="class-B"><p>Class B</p></li>
+              <li class="list-group-item" id="class-C"><p>Class C</p></li>
+              <li class="list-group-item" id="class-D"><p>Class D</p></li>
             </ul>
         </div>
         <div class="col bg-light border">
@@ -44,7 +51,7 @@
                 <div class="form-group">
                   <label for="chat-text">Chat:</label>
                   <input id="chat-text" type="text" class="form-control mx-sm-3">
-                  <button id="chat-send" type="button" class="btn">Send</button>
+                  <input id="chat-send" type="submit" class="btn" value="Send" />
                 </div>
               </form>
             </div>
