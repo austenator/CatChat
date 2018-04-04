@@ -1,29 +1,52 @@
 /* Bootstrap shit */
+#logo {
+  max-width: 120px;
+  margin-bottom: 20px;
+}
 
 /* Chat shit */
-
 #message-log {
   list-style-type: none;
-  padding: 0 1rem;
-  height: 80%;
-  /* height: 500px; */
+  padding: 0;
+  height: 400px;
   overflow-y: scroll;
+  background-color: white;
+}
+
+/* This is for any links in the message log */
+#message-log a {
+  color: #ffff00;
 }
 
 ul#message-log > li {
   margin-bottom: 5px;
-  padding: 1rem;
-  border: 1px solid gray;
-  border-radius: .5rem;
-  box-shadow: 4px 4px 3px #333;
+  padding: 5px;
+  display: list-item;
 }
 
-ul#message-log > li.welcome-message {
-  background-color: #e0e274;
+ul#message-log > li.welcome-message span {
+  background-color: #2f97ef;
+  color: white;
+  border-radius: 1rem 1rem 1rem 0;
 }
 
-ul#message-log > li.system-message {
-  background-color: #ccc;
+ul#message-log > li.system-message span {
+  background-color: #2f97ef;
+  color: white;
+  border-radius: 1rem 1rem 1rem 0;
+}
+
+ul#message-log > li.user-message {
+  text-align: right;
+}
+
+ul#message-log > li span {
+  background-color: #2f97ef;
+  margin-bottom: 5px;
+  padding: 5px;
+  color: white;
+  border-radius: 1rem 1rem 0 1rem;
+  text-align: right;
 }
 
 li.list-group-item {

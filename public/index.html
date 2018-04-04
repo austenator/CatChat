@@ -3,12 +3,19 @@
   <head>
     <title>Cat Chat</title>
     <link href="simple-chat.css" type="text/css" rel="stylesheet">
+    <link rel="icon" type="image/png" href="/images/favicon-16x16.png" sizes="16x16" />
+    <link rel="icon" type="image/png" href="/images/favicon-32x32.png" sizes="32x32" />
+
   </head>
   <body>
     <div class="jumbotron jumbotron-fluid rounded">
-      <div class="container ">
-        <h1 class="display-4">Cat Chat</h1>
+      <div class="container">
+        <h1 class="display-4">
+          <img id='logo' src="images/logo_1.png" class="img-responsive" alt="CatChat Logo">
+          Cat Chat
+        </h1>
         <p class="lead">A university chatroom based on your class.</p>
+
       </div>
     </div>
     <div >
@@ -53,6 +60,10 @@
     </div>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"  integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="/socket.io/socket.io.js"></script>
+    <!-- <script>
+      var socket = io.connect('http://catchat.cs.ksu.edu');
+      console.log("Found socket");
+    </script> -->
     <script src="simple-chat.js" type="application/javascript"></script>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">

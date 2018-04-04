@@ -23,25 +23,32 @@ socket.on('welcome', function(html, name){
 // update the list accordingly.
 socket.on('room-list', function(html){
   $('#room-list').html(html);
-  
 });
 
 // Listen for join messages, and append them
 // to the message log
 socket.on('joined', function(name) {
-  $('<li>')
+  var li = $('<li>')
+    .addClass('system-message');
+
+  $('<span>')
     .text(name + " joined!")
-    .addClass('system-message')
-    .appendTo('#message-log');
+    .appendTo(li);
+
+  li.appendTo('#message-log');
 });
 
 // Listen for left messages, and append them
 // to the message log
 socket.on('left', function(name) {
-  $('<li>')
+  var li = $('<li>')
+    .addClass('system-message');
+
+  $('<span>')
     .text(name + " left!")
-    .addClass('system-message')
-    .appendTo('#message-log');
+    .appendTo(li);
+
+  li.appendTo('#message-log');
 });
 
 // Listen for incoming chat messages, and append
@@ -51,14 +58,18 @@ socket.on('message', function(message){
   if (message.roomId == roomId)
   {
     var li = $('<li>')
-      .appendTo('#message-log');
+      .addClass('user-message');
+    
     $('<strong>')
       .text(message.user + " in " + message.roomName)
       .appendTo(li)
       .css('padding-right', '1rem');
+    
     $('<span>')
       .text(message.text)
       .appendTo(li);
+    
+    li.appendTo('#message-log');
   }
 });
 
