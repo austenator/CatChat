@@ -8,6 +8,7 @@ const PORT = 3000;
 // Requires
 var fs = require('fs');
 var path = require('path');
+var express = require('express');
 var roomController = require('./controller/rooms-controller.js');
 var messagesController = require('./controller/messages-controller.js');
 
@@ -52,7 +53,7 @@ io.on('connection', function(socket){
       roomName: roomController.getRoomById(roomId).name,
       color: color
     };
-    
+
     io.emit('message', message);
     messagesController.storeMessage(message);
   });
@@ -76,7 +77,7 @@ io.on('connection', function(socket){
     name = newName;
     io.emit('changed-name', oldName, newName);
   });
-  
+
   // Add an event handler for when the user leaves
   socket.on('disconnect', function(){
     // let the other users know who has left
