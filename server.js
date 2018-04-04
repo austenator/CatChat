@@ -112,7 +112,7 @@ io.on('connection', function(socket){
   // when the user disconnects.. perform this
   socket.on('disconnect', function(){
     // remove the username from global usernames list
-    delete usernames[socket.username];
+    usernames = usernames.filter(e => e !== socket.username);
     // update list of users in chat, client-side
     io.sockets.emit('updateusers', usernames);
     // echo globally that this client has left
