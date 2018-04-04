@@ -73,7 +73,7 @@ socket.on('message', function(message){
   }
 });
 
-
+//handler for when enter is pressed in the chat box (send message w/o refreshing page)
 $('#chat-text').keypress(function(event) {
   if (event.which == 13) {
     event.preventDefault();
@@ -82,6 +82,14 @@ $('#chat-text').keypress(function(event) {
       socket.emit('message', text);
       $('#chat-text').val('');
     }
+  }
+});
+//send button sends msg w/o refreshing page
+$('#chat-send').on('click', function(event) {
+  var text = $('#chat-text').val();
+  if (text != "") {
+    socket.emit('message', text);
+    $('#chat-text').val('');
   }
 });
 
@@ -136,6 +144,24 @@ $('#set-name').on('click', function() {
     $('#user-name').val(userName);
   }
 
+});
+
+//enter changes username w/o page refresh
+$('#user-name').keypress(function(event) {
+  if (event.which == 13) {
+    event.preventDefault();
+    var newName = $('#user-name').val();
+    console.log("Changing name: " + userName + ", " + newName);
+    if (newName != "" && newName != userName)
+    {
+      userName = newName;
+      socket.emit('name', userName);
+    }
+    else
+    {
+      $('#user-name').val(userName);
+    }
+  }
 });
 
 // A user has changed their name, display message.
