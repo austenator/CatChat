@@ -59,27 +59,29 @@ socket.on('message', function(message){
   {
     var li = $('<li>')
       .addClass('user-message');
-    
+
     $('<strong>')
       .text(message.user + " in " + message.roomName)
       .appendTo(li)
       .css('padding-right', '1rem');
-    
+
     $('<span>')
       .text(message.text)
       .appendTo(li);
-    
+
     li.appendTo('#message-log');
   }
 });
 
-// User wants to send a message. if its not blank, send it.
-$('#chat-send').on('click', function(){
-  var text = $('#chat-text').val();
-  if (text != "")
-  {
-    socket.emit('message', text);
-    $('#chat-text').val('');
+
+$('#chat-text').keypress(function(event) {
+  if (event.which == 13) {
+    event.preventDefault();
+    var text = $('#chat-text').val();
+    if (text != "") {
+      socket.emit('message', text);
+      $('#chat-text').val('');
+    }
   }
 });
 
@@ -129,11 +131,11 @@ $('#set-name').on('click', function() {
     userName = newName;
     socket.emit('name', userName);
   }
-  else 
+  else
   {
     $('#user-name').val(userName);
   }
-  
+
 });
 
 // A user has changed their name, display message.
@@ -145,4 +147,3 @@ socket.on('changed-name', function(oldName, newName) {
     .addClass('system-message')
     .appendTo('#message-log');
 });
-
