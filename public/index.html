@@ -15,15 +15,18 @@
           Cat Chat
         </h1>
         <p class="lead">A university chatroom based on your class.</p>
-
       </div>
     </div>
-    <div >
-      <form >
-        <label for="user-name">User Name:</label>
-        <input id="user-name" type="text"/>
-        <input id="set-name" type="button" value="Set"/>
-      </form>
+    <div id="set-name-controls">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text">Username:</span>
+        </div>
+        <input id="user-name" type="text" class="form-control">
+        <div class="input-group-append">
+          <button id="set-name" class="btn btn-outline-info" type="button">Set</button>
+        </div>
+      </div>
     </div>
     <div class="container border rounded m-4" id="chat-panel">
       <div class="row">
@@ -36,34 +39,28 @@
       </div>
       <div class="row">
         <div class="col-4 bg-light border px-0" id="room-list">
-            <ul class="list-group-flush px-0">
-              <li class="list-group-item" id="class-A"><p>Class A</p></li>
-              <li class="list-group-item" id="class-B"><p>Class B</p></li>
-              <li class="list-group-item" id="class-C"><p>Class C</p></li>
-              <li class="list-group-item" id="class-D"><p>Class D</p></li>
-            </ul>
+            <!-- list of classes -->
         </div>
         <div class="col bg-light border">
             <ul id="message-log">
             </ul>
-            <div id="chat-controls">
-              <form class="form-inline">
-                <div class="form-group">
-                  <label for="chat-text">Chat:</label>
-                  <input id="chat-text" type="text" class="form-control mx-sm-3">
-                  <input id="chat-send" type="button" class="btn" value="Send" />
+              <div id="chat-controls">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span  class="input-group-text">Chat:</span>
+                  </div>
+                  <input id="chat-text" type="text" class="form-control">
+                  <div class="input-group-append">
+                    <button id="chat-send" class="btn btn-outline-info" type="button">Send</button>
+                  </div>
                 </div>
-              </form>
+              </div>
             </div>
         </div>
       </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"  integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="/socket.io/socket.io.js"></script>
-    <!-- <script>
-      var socket = io.connect('http://catchat.cs.ksu.edu');
-      console.log("Found socket");
-    </script> -->
     <script src="simple-chat.js" type="application/javascript"></script>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">

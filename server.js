@@ -34,7 +34,6 @@ var connected = 0;
 io.on('connection', function(socket){
   // Set the user properties
   var name = 'User ' + connected;
-  var color = 'gray';
   var roomId = 'lobby';
 
   // Count the user
@@ -50,18 +49,11 @@ io.on('connection', function(socket){
       user: name,
       text: text,
       roomId: roomId,
-      roomName: roomController.getRoomById(roomId).name,
-      color: color
+      roomName: roomController.getRoomById(roomId).name
     };
 
     io.emit('message', message);
     messagesController.storeMessage(message);
-  });
-
-  // Add an event handler for when the user changes
-  // thier color
-  socket.on('color', function(newColor) {
-    color = newColor;
   });
 
   socket.on('room', function(newRoomId) {
@@ -85,8 +77,7 @@ io.on('connection', function(socket){
   });
 
   // Send a welcome message to the user
-  var welcomeMessage = "<strong>Welcome " + name + "!</strong>";
-  welcomeMessage += " Check out the <a href='https://github.com/austenator/CatChat'>repo.</a>";
-  socket.emit('welcome', welcomeMessage, name);
+  socket.emit('welcome', name);
+  
   socket.emit('room-list', roomController.list());
 });
