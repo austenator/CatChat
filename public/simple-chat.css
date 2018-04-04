@@ -90,7 +90,7 @@ ul#message-log > li.other-message {
   margin: 24px;
   max-width: 350px;
 }
-
-li.list-group-item {
+/* 
+#room-list{
   cursor: pointer;
-}
+} */
