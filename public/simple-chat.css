@@ -33,25 +33,57 @@ ul#message-log > li.welcome-message span {
   background-color: #2f97ef;
   color: white;
   border-radius: 1rem 1rem 1rem 0;
+  margin-bottom: 5px;
+  padding: 5px;
 }
 
 ul#message-log > li.system-message span {
   background-color: #2f97ef;
   color: white;
   border-radius: 1rem 1rem 1rem 0;
+  margin-bottom: 5px;
+  padding: 5px;
 }
 
-ul#message-log > li.user-message {
-  text-align: right;
-}
-
-ul#message-log > li span {
+.user-message-body span{
   background-color: #2f97ef;
   margin-bottom: 5px;
   padding: 5px;
   color: white;
   border-radius: 1rem 1rem 0 1rem;
   text-align: right;
+}
+
+.other-message-body span {
+  background-color: #2f97ef;
+  margin-bottom: 5px;
+  padding: 5px;
+  color: white;
+  border-radius: 1rem 1rem 1rem 0;
+  text-align: left;
+}
+
+ul#message-log > li.user-message {
+  text-align: right;
+}
+
+ul#message-log > li.other-message {
+  text-align: left;
+
+}
+
+.user-message-header p {
+  color: black;
+  font-size: 50%;
+  text-align: right;
+  margin-bottom: 2px;
+}
+
+.other-message-header p {
+  color: black;
+  font-size: 50%;
+  text-align: left;
+  margin-bottom: 2px;
 }
 
 #set-name-controls {

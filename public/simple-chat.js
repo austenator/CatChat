@@ -1,20 +1,36 @@
-//This is basically the Client side scripts
+// This are the client side scripts
 
 // Create the socket.io client
 var socket = io();
 var roomId = "lobby";
 var userName =  $('#user-name').val();
-console.log("Init: " + roomId);
+// console.log("Init: " + roomId);
 
+function wrapMessage(textToWrap, classToAdd){
+  var li = $('<li>')
+    .addClass(classToAdd);
+
+  $('<span>')
+    .text(textToWrap)
+    .appendTo(li);
+
+  return li;
+}
 
 // Listen for welcome messages, and append
 // them to the message log
-socket.on('welcome', function(html, name){
-  console.log("Welcome recieved: "+ name);
-  $('<li>')
-    .html(html)
-    .addClass('welcome-message')
-    .appendTo('#message-log');
+socket.on('welcome', function(name){
+  // console.log("Welcome recieved: "+ name);
+
+  // Build welcome message for the lobby.
+  var welcomeMessage = "Welcome to CatChat! Please "+
+  "find your class on the left and select it to join.";
+  // welcomeMessage += " Check out the <a href='https://github.com/austenator/CatChat'>repo.</a>";
+
+  // Wrap the message in the span and append it to the message-log.
+  var li = wrapMessage(welcomeMessage,'welcome-message');
+  li.appendTo('#message-log');
+
   $('#user-name').val(name);
   userName = name;
 });
@@ -28,26 +44,14 @@ socket.on('room-list', function(html){
 // Listen for join messages, and append them
 // to the message log
 socket.on('joined', function(name) {
-  var li = $('<li>')
-    .addClass('system-message');
-
-  $('<span>')
-    .text(name + " joined!")
-    .appendTo(li);
-
+  var li = wrapMessage(name+' joined!', 'system-message');
   li.appendTo('#message-log');
 });
 
 // Listen for left messages, and append them
 // to the message log
 socket.on('left', function(name) {
-  var li = $('<li>')
-    .addClass('system-message');
-
-  $('<span>')
-    .text(name + " left!")
-    .appendTo(li);
-
+  var li = wrapMessage(name+' left!', 'system-message');
   li.appendTo('#message-log');
 });
 
@@ -57,19 +61,50 @@ socket.on('left', function(name) {
 socket.on('message', function(message){
   if (message.roomId == roomId)
   {
-    var li = $('<li>')
-      .addClass('user-message');
+    if(message.user == userName){
+      var li = $('<li>')
+        .addClass('user-message');
 
-    $('<strong>')
-      .text(message.user + " in " + message.roomName)
-      .appendTo(li)
-      .css('padding-right', '1rem');
+      var header = $('<div>')
+        .addClass('user-message-header')
+        .appendTo(li);
 
-    $('<span>')
-      .text(message.text)
-      .appendTo(li);
+      var body = $('<div>')
+        .addClass('user-message-body')
+        .appendTo(li);
 
-    li.appendTo('#message-log');
+      var user = $('<p>')
+        .text(message.user)
+        .appendTo(header);
+
+      var message =$('<span>')
+        .text(message.text)
+        .appendTo(body);
+
+      li.appendTo('#message-log');
+    } else {
+      var li = $('<li>')
+        .addClass('other-message');
+
+      var header = $('<div>')
+        .addClass('other-message-header')
+        .appendTo(li);
+
+      var body = $('<div>')
+        .addClass('other-message-body')
+        .appendTo(li);
+
+      var user = $('<p>')
+        .text(message.user)
+        .appendTo(header);
+
+      var message =$('<span>')
+        .text(message.text)
+        .appendTo(body);
+
+      li.appendTo('#message-log');
+    }
+
   }
 });
 
@@ -114,10 +149,9 @@ socket.on('changed-room', function(name, oldRoomId, newRoomId, roomName) {
   console.log("Room change: "+ name +", "+ oldRoomId +", "+ newRoomId +", "+ roomName);
   if (roomId == oldRoomId || roomId == newRoomId)
   {
-    $('<li>')
-      .text(name + " changed to "+ roomName + "!")
-      .addClass('system-message')
-      .appendTo('#message-log');
+    var message = name + " changed to "+ roomName + "!";
+    var li = wrapMessage(message, 'system-message');
+    li.appendTo('#message-log');
   }
 
   if (name == userName)
@@ -167,9 +201,8 @@ $('#user-name').keypress(function(event) {
 // A user has changed their name, display message.
 // TODO, only show changes for users in this user's room.
 socket.on('changed-name', function(oldName, newName) {
-  console.log("Name Changed: " + oldName + ", " + newName);
-  $('<li>')
-    .text(oldName + " changed name to "+ newName + "!")
-    .addClass('system-message')
-    .appendTo('#message-log');
+  // console.log("Name Changed: " + oldName + ", " + newName);
+  var message = oldName + " changed name to "+ newName + "!";
+  var li = wrapMessage(message, 'system-message');
+  li.appendTo('#message-log');
 });
