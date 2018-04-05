@@ -9,13 +9,18 @@ const PORT = 3000;
 var fs = require('fs');
 var path = require('path');
 var express = require('express');
-var roomController = require('./controller/rooms-controller.js');
-var messagesController = require('./controller/messages-controller.js');
 
 // Set up server
 var app = express();
 var server = require('http').createServer(app);
 var io = require('socket.io').listen(server);
+
+// Data controllers
+var roomController = require('./controller/rooms-controller.js');
+var rooms = roomController.list();
+
+var messagesController = require('./controller/messages-controller.js');
+messagesController.initFileStorage(rooms);
 
 // Routing
 app.use(express.static(path.join(__dirname, 'public')));
@@ -24,9 +29,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 server.listen(PORT, function () {
   console.log('Server listening at port %d.', PORT);
 });
-
-// rooms which are currently available in chat
-var rooms = roomController.list();
 
 // Track how many users have connected
 var connected = 0;
@@ -73,6 +75,7 @@ io.on('connection', function(socket){
       else
       {
         io.sockets.in(socket.room).emit('updatechat', socket.username, data);
+        messagesController.storeMessage(socket.username, socket.room, data);
       }
   });
 
