@@ -4,7 +4,7 @@ module.exports = {
     initFileStorage: initFileStorage,
     storeMessage: storeMessage,
     //getAll: getAll,
-    //getMessagesByRoomId: getMessagesByRoomId
+    getMessagesByRoomId: getMessagesByRoomId
 }
 
 function initFileStorage(rooms)
@@ -35,16 +35,19 @@ function storeMessage(userName, room, text) {
 // }
 
 
-// function getMessagesByRoomId(desiredRoomId) {
-//     var messages = messagesModel.getMessages();
-//     var desiredMessages = [];
-//
-//     for (var i = 0; i < messages.length; i++)
-//     {
-//         if (messages[i].roomId == desiredRoomId)
-//         {
-//             desiredMessages.push(messages[i]);
-//         }
-//     }
-//     return desiredMessages
-// }
+function getMessagesByRoomId(desiredRoomId) {
+    // var messages = messagesModel.getMessages();
+    // var desiredMessages = [];
+    //
+    // for (var i = 0; i < messages.length; i++)
+    // {
+    //     if (messages[i].roomId == desiredRoomId)
+    //     {
+    //         desiredMessages.push(messages[i]);
+    //     }
+    // }
+    // return desiredMessages
+
+    // This should probably do something
+    return messagesModel.getMessagesByRoom(desiredRoomId);
+}

@@ -11,7 +11,7 @@ module.exports = {
 
   /* Load sync files into a global variable
   * This serves as an in-memory cache for speedy access.
-   stores as a dictionary
+   Stores as a dictionary
     [
       {
         id: roomId,
@@ -45,10 +45,10 @@ function initRoomFile(roomId)
     messagesDB.push(roomDB);
 }
 
-function getMessages() {
-    // Clone and return the message object
-    //return JSON.parse(JSON.stringify(messages));
-}
+// function getMessages() {
+//     // Clone and return the message object
+//     //return JSON.parse(JSON.stringify(messages));
+// }
 
 function getMessagesByRoom(roomId)
 {
