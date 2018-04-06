@@ -104,6 +104,25 @@ socket.on('updaterooms', function(rooms, current_room) {
 
 });
 
+//server is letting the client know that they have changed rooms
+// and is providing a log of messages
+socket.on('switchRoom', function(messages) {
+  $('#message-log').empty();
+  console.log(messages);
+  for (var i = 0; i < messages.length; i++)
+  {
+    console.log(messages[i].user + ", " + messages[i].data);
+    if(messages[i].user == thisUsername){
+      sendUserMessage(messages[i].user,messages[i].data);
+    } else if(messages[i].user == 'SERVER'){
+      sendServerMessage(messages[i].data);
+    } else {
+      sendOtherMessage(messages[i].user, messages[i].data);
+    }
+  }
+
+});
+
 // A user has changed their name, display message.
 // TODO, only show changes for users in this user's room.
 socket.on('changed-name', function(old_name, new_name) {

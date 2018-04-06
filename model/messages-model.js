@@ -30,11 +30,12 @@ module.exports = {
 function initRoomFile(roomId)
 {
     var filename = './messages/messages_'+roomId+'.json';
-    fs.open(filename, 'w', function (err) {
+    fs.open(filename, 'a+', function (err) {
       if (err) console.log(err);
     });
 
     var fileContents = fs.readFileSync(filename, {encoding: 'utf-8'});
+    console.log(roomId + ", " + fileContents);
     if (!fileContents) fileContents = "[]";
 
     var roomDB = {

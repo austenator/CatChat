@@ -1,7 +1,22 @@
 [
     {
-        "timestamp": 1522951615215,
+        "timestamp": 1522988634403,
         "user": "WES",
-        "data": "test"
+        "data": "asdfasdf"
+    },
+    {
+        "timestamp": 1522988671953,
+        "user": "WES",
+        "data": "hi"
+    },
+    {
+        "timestamp": 1522988675034,
+        "user": "WES2",
+        "data": "how you"
+    },
+    {
+        "timestamp": 1522988681186,
+        "user": "WES",
+        "data": "byeee"
     }
 ]

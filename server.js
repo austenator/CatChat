@@ -101,6 +101,7 @@ io.on('connection', function(socket){
     socket.leave(socket.room);
     // join new room, received as function parameter
     socket.join(newroom);
+    socket.emit('switchRoom', messagesController.getMessagesByRoomId(newroom));
     socket.emit('updatechat', 'SERVER', 'You have connected to '+ newRoomName + '!');
     // sent message to OLD room
     socket.broadcast.to(socket.room).emit('updatechat', 'SERVER', socket.username+' has left this room.');
