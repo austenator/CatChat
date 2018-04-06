@@ -32,18 +32,23 @@ function initRoomFile(roomId)
     var filename = './messages/messages_'+roomId+'.json';
     fs.open(filename, 'a+', function (err) {
       if (err) console.log(err);
+      else
+      {
+        var fileContents = fs.readFileSync(filename, {encoding: 'utf-8'});
+        //console.log(roomId + ", " + fileContents);
+        if (!fileContents) fileContents = "[]";
+
+        var roomDB = {
+            id: roomId,
+            messages: JSON.parse(fileContents)
+        }
+
+        messagesDB.push(roomDB);
+      }
+
     });
 
-    var fileContents = fs.readFileSync(filename, {encoding: 'utf-8'});
-    console.log(roomId + ", " + fileContents);
-    if (!fileContents) fileContents = "[]";
 
-    var roomDB = {
-        id: roomId,
-        messages: JSON.parse(fileContents)
-    }
-
-    messagesDB.push(roomDB);
 }
 
 // function getMessages() {

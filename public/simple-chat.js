@@ -7,6 +7,7 @@ var thisUsername = "user";
 
 function sendMessage(list_item){
   list_item.appendTo('#message-log');
+  $("#message-log").scrollTop($("#message-log")[0].scrollHeight);
   return;
 }
 
@@ -108,10 +109,10 @@ socket.on('updaterooms', function(rooms, current_room) {
 // and is providing a log of messages
 socket.on('switchRoom', function(messages) {
   $('#message-log').empty();
-  console.log(messages);
+  //console.log(messages);
   for (var i = 0; i < messages.length; i++)
   {
-    console.log(messages[i].user + ", " + messages[i].data);
+    //console.log(messages[i].user + ", " + messages[i].data);
     if(messages[i].user == thisUsername){
       sendUserMessage(messages[i].user,messages[i].data);
     } else if(messages[i].user == 'SERVER'){

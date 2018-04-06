@@ -18,5 +18,30 @@
         "timestamp": 1522988681186,
         "user": "WES",
         "data": "byeee"
+    },
+    {
+        "timestamp": 1523023034145,
+        "user": "WES",
+        "data": "test"
+    },
+    {
+        "timestamp": 1523023035633,
+        "user": "WES",
+        "data": "hello"
+    },
+    {
+        "timestamp": 1523023037129,
+        "user": "WES",
+        "data": "sdfasdf"
+    },
+    {
+        "timestamp": 1523023039088,
+        "user": "WES",
+        "data": "thest"
+    },
+    {
+        "timestamp": 1523023044208,
+        "user": "WES",
+        "data": "this is a message"
     }
 ]

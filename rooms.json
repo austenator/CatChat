@@ -11,9 +11,9 @@
         "lab":""
     },
     {
-        "id":"class-a",
-        "name":"Class A",
-        "description":"Example Class",
+        "id":"cis526-a",
+        "name":"CIS 526: A",
+        "description":"Web Interface Design",
         "monday":"",
         "tuesday":"",
         "wednesday":"",
@@ -22,9 +22,9 @@
         "lab":""
     },
     {
-        "id":"class-b",
-        "name":"Class B",
-        "description":"Example Class",
+        "id":"cis450-a",
+        "name":"CIS 450: A",
+        "description":"Computer Arch and Op",
         "monday":"",
         "tuesday":"",
         "wednesday":"",
@@ -33,9 +33,9 @@
         "lab":""
     },
     {
-        "id":"class-c",
-        "name":"Class C",
-        "description":"Example Class",
+        "id":"cis450-b",
+        "name":"CIS 450: B",
+        "description":"Computer Arch and Op",
         "monday":"",
         "tuesday":"",
         "wednesday":"",
@@ -44,9 +44,31 @@
         "lab":""
     },
     {
-        "id":"class-d",
-        "name":"Class D",
-        "description":"Example Class",
+        "id":"math220-lec1",
+        "name":"Math 220: Lecture 1",
+        "description":"Analytic Geometry And Calc I ",
+        "monday":"",
+        "tuesday":"",
+        "wednesday":"",
+        "thurday":"",
+        "friday":"",
+        "lab":""
+    },
+    {
+        "id":"math220-lec2",
+        "name":"Math 220: Lecture 2",
+        "description":"Analytic Geometry And Calc I ",
+        "monday":"",
+        "tuesday":"",
+        "wednesday":"",
+        "thurday":"",
+        "friday":"",
+        "lab":""
+    },
+    {
+        "id":"math220-a",
+        "name":"Math 220: A",
+        "description":"Analytic Geometry And Calc I ",
         "monday":"",
         "tuesday":"",
         "wednesday":"",
