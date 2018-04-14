@@ -62,6 +62,7 @@ io.on('connection', function(socket){
     socket.emit('updatechat', 'SERVER', 'Welcome to Cat Chat. Please select your class to the left.');
     // echo to room 1 that a person has connected to their room
     socket.broadcast.to(currentRoom).emit('updatechat', 'SERVER', username + ' has connected to this room.');
+    rooms = roomController.list();
     socket.emit('updaterooms', rooms, currentRoom);
   });
 
@@ -108,6 +109,7 @@ io.on('connection', function(socket){
     // update socket session room title
     socket.room = newroom;
     socket.broadcast.to(newroom).emit('updatechat', 'SERVER', socket.username+' has joined this room.');
+    rooms = roomController.list();
     socket.emit('updaterooms', rooms, newroom);
 
     currentRoom = newroom;

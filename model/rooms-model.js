@@ -27,7 +27,7 @@ function addRoom(room, callback) {
         monday: escapeHTML(room.monday),
         tuesday: escapeHTML(room.tuesday),
         wednesday: escapeHTML(room.wednesday),
-        thurday: escapeHTML(room.thurday),
+        thursday: escapeHTML(room.thursday),
         friday: escapeHTML(room.friday),
     }
 

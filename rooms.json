@@ -3,77 +3,120 @@
         "id":"lobby",
         "name":"Lobby",
         "description":"Home",
+        "sunday":"",
         "monday":"",
         "tuesday":"",
         "wednesday":"",
-        "thurday":"",
+        "thursday":"",
         "friday":"",
-        "lab":""
+        "saturday":""
+    },
+    {
+        "id":"demo-a",
+        "name":"Demo: A",
+        "description":"Class for testing and demonstrating chatroom scheduling",
+        "sunday":"",
+        "monday":"",
+        "tuesday":"",
+        "wednesday":"",
+        "thursday":"",
+        "friday":"",
+        "saturday":"1612-1615"
     },
     {
         "id":"cis526-a",
         "name":"CIS 526: A",
         "description":"Web Interface Design",
+        "sunday":"",
         "monday":"",
-        "tuesday":"",
+        "tuesday":"1130-1245",
         "wednesday":"",
-        "thurday":"",
+        "thursday":"1130-1245",
         "friday":"",
-        "lab":""
+        "saturday":""
     },
     {
         "id":"cis450-a",
         "name":"CIS 450: A",
         "description":"Computer Arch and Op",
-        "monday":"",
+        "sunday":"",
+        "monday":"0930-1020",
         "tuesday":"",
-        "wednesday":"",
-        "thurday":"",
-        "friday":"",
-        "lab":""
+        "wednesday":"0930-1020",
+        "thursday":"",
+        "friday":"0930-1020",
+        "saturday":""
     },
     {
         "id":"cis450-b",
         "name":"CIS 450: B",
         "description":"Computer Arch and Op",
-        "monday":"",
+        "sunday":"",
+        "monday":"1230-1320",
         "tuesday":"",
-        "wednesday":"",
-        "thurday":"",
-        "friday":"",
-        "lab":""
+        "wednesday":"1230-1320",
+        "thursday":"",
+        "friday":"1230-1320",
+        "saturday":""
     },
     {
         "id":"math220-lec1",
         "name":"Math 220: Lecture 1",
         "description":"Analytic Geometry And Calc I ",
-        "monday":"",
+        "sunday":"",
+        "monday":"0930-1020",
         "tuesday":"",
-        "wednesday":"",
-        "thurday":"",
+        "wednesday":"0930-1020",
+        "thursday":"",
         "friday":"",
-        "lab":""
+        "saturday":""
     },
     {
         "id":"math220-lec2",
         "name":"Math 220: Lecture 2",
         "description":"Analytic Geometry And Calc I ",
-        "monday":"",
+        "sunday":"",
+        "monday":"1330-1420",
         "tuesday":"",
-        "wednesday":"",
-        "thurday":"",
+        "wednesday":"1330-1420",
+        "thursday":"",
         "friday":"",
-        "lab":""
+        "saturday":""
     },
     {
         "id":"math220-a",
         "name":"Math 220: A",
         "description":"Analytic Geometry And Calc I ",
+        "sunday":"",
         "monday":"",
-        "tuesday":"",
+        "tuesday":"0730-0820",
         "wednesday":"",
-        "thurday":"",
+        "thursday":"0730-0820",
         "friday":"",
-        "lab":""
+        "saturday":""
+    },
+    {
+        "id":"math220-b",
+        "name":"Math 220: B",
+        "description":"Analytic Geometry And Calc I ",
+        "sunday":"",
+        "monday":"",
+        "tuesday":"0830-0920",
+        "wednesday":"",
+        "thursday":"0830-0920",
+        "friday":"",
+        "saturday":""
+    },
+    {
+        "id":"math220-c",
+        "name":"Math 220: C",
+        "description":"Analytic Geometry And Calc I ",
+        "sunday":"",
+        "monday":"",
+        "tuesday":"0830-0920",
+        "wednesday":"",
+        "thursday":"0830-0920",
+        "friday":"",
+        "saturday":""
     }
 ]
