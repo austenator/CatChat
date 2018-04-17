@@ -2,6 +2,7 @@ const roomModel = require('../model/rooms-model');
 
 module.exports = {
     list: list,
+    listAll: listAll,
     htmlList: htmlList,
     getLobby: getLobby,
     getRoomById: getRoomById,
@@ -12,9 +13,9 @@ function list() {
   var rooms = roomModel.getRooms();
   var dateFactory = new Date();
   var currentTime =  (dateFactory.getHours()*100) + dateFactory.getMinutes();
-  console.log("currentTime: "+currentTime);
+  //console.log("currentTime: "+currentTime);
   var today = dateFactory.getDay(); //Sunday = 0, Saturday = 6
-  console.log("today: "+today);
+  //console.log("today: "+today);
   var list = [];
 
   for (var i = 0; i < rooms.length; i++)
@@ -54,7 +55,7 @@ function list() {
                   break;
           }
 
-          console.log("todaysTimes: "+todaysTimes);
+          //console.log("todaysTimes: "+todaysTimes);
 
           if (todaysTimes)
           {
@@ -63,7 +64,7 @@ function list() {
               classTimes[0] = Number(classTimes[0]);
               classTimes[1] = Number(classTimes[1]);
 
-              console.log("classTimes: " + classTimes[0] + ", " + classTimes[1]);
+              //console.log("classTimes: " + classTimes[0] + ", " + classTimes[1]);
 
               if (classTimes[0] < currentTime && currentTime < classTimes[1])
               {
@@ -81,13 +82,16 @@ function list() {
 
 function listAll() {
   var rooms = roomModel.getRooms();
-    var list = [];
+  var list = [];
 
-  var r = {
-      id: rooms[i].id,
-      name: rooms[i].name
-  };
-  list.push(r);
+  for (var i = 0; i < rooms.length; i++)
+  {
+      var r = {
+          id: rooms[i].id,
+          name: rooms[i].name
+      };
+      list.push(r);
+  }
 
   return list;
 }

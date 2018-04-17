@@ -17,7 +17,7 @@ var io = require('socket.io').listen(server);
 
 // Data controllers
 var roomController = require('./controller/rooms-controller.js');
-var rooms = roomController.list();
+var rooms = roomController.listAll();
 
 var messagesController = require('./controller/messages-controller.js');
 messagesController.initFileStorage(rooms);
@@ -62,7 +62,7 @@ io.on('connection', function(socket){
     socket.emit('updatechat', 'SERVER', 'Welcome to Cat Chat. Please select your class to the left.');
     // echo to room 1 that a person has connected to their room
     socket.broadcast.to(currentRoom).emit('updatechat', 'SERVER', username + ' has connected to this room.');
-    rooms = roomController.list();
+    updateRooms();
     socket.emit('updaterooms', rooms, currentRoom);
   });
 
@@ -109,7 +109,7 @@ io.on('connection', function(socket){
     // update socket session room title
     socket.room = newroom;
     socket.broadcast.to(newroom).emit('updatechat', 'SERVER', socket.username+' has joined this room.');
-    rooms = roomController.list();
+    updateRooms();
     socket.emit('updaterooms', rooms, newroom);
 
     currentRoom = newroom;
@@ -125,4 +125,25 @@ io.on('connection', function(socket){
     socket.broadcast.emit('updatechat', 'SERVER', socket.username + ' has disconnected.');
     socket.leave(socket.room);
   });
+
+  function updateRooms() {
+      var newRooms = roomController.list();
+      console.log(newRooms);
+      for (var i = 0; i < rooms.length; i++)
+      {
+          var roomStillOpen = false;
+          for (var j = 0; j < newRooms.length; j++)
+          {
+              if (newRooms[j].id == rooms[i].id)
+                roomStillOpen = true;
+          }
+          if (!roomStillOpen)
+          {
+              // close room
+              // move everyone to Lobby
+              // close chatlog and start a new one
+          }
+      }
+      rooms = newRooms;
+  }
 });
