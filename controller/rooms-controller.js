@@ -66,7 +66,7 @@ function list() {
 
               //console.log("classTimes: " + classTimes[0] + ", " + classTimes[1]);
 
-              if (classTimes[0] < currentTime && currentTime < classTimes[1])
+              if (classTimes[0] =< currentTime && currentTime =< classTimes[1])
               {
                   var r = {
                       id: rooms[i].id,

@@ -4,7 +4,8 @@ module.exports = {
     initFileStorage: initFileStorage,
     storeMessage: storeMessage,
     //getAll: getAll,
-    getMessagesByRoomId: getMessagesByRoomId
+    getMessagesByRoomId: getMessagesByRoomId,
+    archiveRoomLog: archiveRoomLog
 }
 
 function initFileStorage(rooms)
@@ -50,4 +51,9 @@ function getMessagesByRoomId(desiredRoomId) {
 
     // This should probably do something
     return messagesModel.getMessagesByRoom(desiredRoomId);
+}
+
+function archiveRoomLog(roomId) {
+   messagesModel.archiveRoomFile(roomId);
+   messagesModel.initRoomFile(roomId);
 }

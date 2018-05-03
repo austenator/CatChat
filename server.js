@@ -18,9 +18,12 @@ var io = require('socket.io').listen(server);
 // Data controllers
 var roomController = require('./controller/rooms-controller.js');
 var rooms = roomController.listAll();
+var lobby = "lobby";
 
 var messagesController = require('./controller/messages-controller.js');
 messagesController.initFileStorage(rooms);
+
+rooms = roomController.list();
 
 // Routing
 app.use(express.static(path.join(__dirname, 'public')));
@@ -134,14 +137,42 @@ io.on('connection', function(socket){
           var roomStillOpen = false;
           for (var j = 0; j < newRooms.length; j++)
           {
+              console.log("comparing new "+newRooms[j].id + " to old "+rooms[i].id);
+              console.log(newRooms[j].id == rooms[i].id);
               if (newRooms[j].id == rooms[i].id)
-                roomStillOpen = true;
+              {
+                  roomStillOpen = true;
+              }
+
+              console.log("roomflag = " +roomStillOpen);
           }
           if (!roomStillOpen)
           {
               // close room
-              // move everyone to Lobby
+              // TODO make use of node scheduling. to give warnings
+              var clients = io.sockets.adapter.rooms[rooms[i].id];
+
+              if (clients.length > 0)
+              {
+                socket.broadcast.to(rooms[i].id).emit('updatechat', 'SERVER', rooms[i].name+' has closed. The chat log will be available for download in a moment.');
+                // move everyone to Lobby
+                for (var k = 0; k < clients.length; k++)
+                {
+                  clients[k].leave(rooms[i].id);
+                  clients[k].join(lobby);
+                  clients[k].emit('switchRoom', messagesController.getMessagesByRoomId(newroom));
+                  clients[k].emit('updatechat', 'SERVER', 'You have been moved to the lobby.');
+                }
+                // io.sockets.clients(rooms[i].id).forEach(function(s){
+                //     s.leave(rooms[i].id);
+                //     s.join(lobby);
+                //     s.emit('switchRoom', messagesController.getMessagesByRoomId(newroom));
+                //     s.emit('updatechat', 'SERVER', 'You have been moved to the lobby.');
+                // });
+
+              }
               // close chatlog and start a new one
+              messagesController.archiveRoomLog(rooms[i].id);
           }
       }
       rooms = newRooms;

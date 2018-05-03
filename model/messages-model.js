@@ -6,7 +6,8 @@ module.exports = {
     initRoomFile: initRoomFile,
     //getMessages: getMessages,
     getMessagesByRoom: getMessagesByRoom,
-    addMessage: addMessage
+    addMessage: addMessage,
+    archiveRoomFile: archiveRoomFile
 };
 
   /* Load sync files into a global variable
@@ -78,5 +79,20 @@ function addMessage(message, roomId, callback) {
     fs.writeFile('./messages/messages_'+roomId+'.json', JSON.stringify(roomMessages, null, 4), 'utf-8', callback);
     //callback(false, JSON.parse(JSON.stringify(sanitizedMessage)));
     //not using a callback is depriciated and produces a node warning.
+
+}
+
+function archiveRoomFile(roomId)
+{
+    var dateFactory = new Date();
+    var timestamp =  String(dateFactory.getFullYear()) + "-"
+      + String(dateFactory.getMonth()+1) + "-"
+      + String(dateFactory.getUTCDate());
+    var currentFilename = './messages/messages_'+roomId+'.json';
+    var newFilename = './messages/messages_'+roomId+'-'+timestamp +'.json';
+
+    fs.rename(currentFilename, newFilename, function(err) {
+        if ( err ) console.log('ERROR: ' + err);
+    });
 
 }
