@@ -1,43 +1,59 @@
 const messagesModel = require('../model/messages-model');
 
 module.exports = {
+    initFileStorage: initFileStorage,
     storeMessage: storeMessage,
-    getAll: getAll,
-    getMessagesByRoomId: getMessagesByRoomId
+    //getAll: getAll,
+    getMessagesByRoomId: getMessagesByRoomId,
+    archiveRoomLog: archiveRoomLog
 }
 
-function storeMessage(message) {
-    messagesModel.addMessage(message);
+function initFileStorage(rooms)
+{
+    for (var i = 0; i < rooms.length; i++)
+    {
+        messagesModel.initRoomFile(rooms[i].id);
+    }
+}
+
+function storeMessage(userName, room, text) {
+    var message = {
+        timestamp: new Date().getTime(),
+        user: userName,
+        data: text
+    };
+
+    messagesModel.addMessage(message, room, function(err) {
+      if (err) console.log(err);
+    });
+
 }
 
 
-function getAll() {
-    var messages = messagesModel.getMessages();
-    return messages;
-    // //var html = studentIndex(students);
-    // var html = "<ul class=\"list-group-flush px-0\">";
-    // html += rooms.map(function(item) {
-    //     //<li class="list-group-item" id="class-A"><p>Class A</p></li>
-    //     return "<li class=\"list-group-item chatroom\" id=\""+ item.id +"\"><p>" + item.name + "</p></li>";
-    // }).join("");
-    // html += "</ul>"
-
-    // return html;
-}
+// function getAll() {
+//     var messages = messagesModel.getMessages();
+//     return messages;
+// }
 
 
 function getMessagesByRoomId(desiredRoomId) {
-    var messages = messagesModel.getMessages();
-    var desiredMessages = [];
+    // var messages = messagesModel.getMessages();
+    // var desiredMessages = [];
+    //
+    // for (var i = 0; i < messages.length; i++)
+    // {
+    //     if (messages[i].roomId == desiredRoomId)
+    //     {
+    //         desiredMessages.push(messages[i]);
+    //     }
+    // }
+    // return desiredMessages
 
-    for (var i = 0; i < messages.length; i++)
-    {
-        if (messages[i].roomId == desiredRoomId)
-        {
-            desiredMessages.push(messages[i]);
-        }
-    }
-    return desiredMessages
+    // This should probably do something
+    return messagesModel.getMessagesByRoom(desiredRoomId);
 }
 
-
+function archiveRoomLog(roomId) {
+   messagesModel.archiveRoomFile(roomId);
+   messagesModel.initRoomFile(roomId);
+}

@@ -2,6 +2,7 @@ const roomModel = require('../model/rooms-model');
 
 module.exports = {
     list: list,
+    listAll: listAll,
     htmlList: htmlList,
     getLobby: getLobby,
     getRoomById: getRoomById,
@@ -9,6 +10,77 @@ module.exports = {
 }
 
 function list() {
+  var rooms = roomModel.getRooms();
+  var dateFactory = new Date();
+  var currentTime =  (dateFactory.getHours()*100) + dateFactory.getMinutes();
+  //console.log("currentTime: "+currentTime);
+  var today = dateFactory.getDay(); //Sunday = 0, Saturday = 6
+  //console.log("today: "+today);
+  var list = [];
+
+  for (var i = 0; i < rooms.length; i++)
+  {
+      if (rooms[i].id == "lobby")
+      {
+          var r = {
+              id: rooms[i].id,
+              name: rooms[i].name
+          };
+          list.push(r);
+      }
+      else
+      {
+          var todaysTimes;
+          switch (today) {
+              case 0:
+                  todaysTimes = rooms[i].sunday;
+                  break;
+              case 1:
+                  todaysTimes = rooms[i].monday;
+                  break;
+              case 2:
+                  todaysTimes = rooms[i].tuesday;
+                  break;
+              case 3:
+                  todaysTimes = rooms[i].wednesday;
+                  break;
+              case 4:
+                  todaysTimes = rooms[i].thursday;
+                  break;
+              case 5:
+                  todaysTimes = rooms[i].friday;
+                  break;
+              case 6:
+                  todaysTimes = rooms[i].saturday;
+                  break;
+          }
+
+          //console.log("todaysTimes: "+todaysTimes);
+
+          if (todaysTimes)
+          {
+              var classTimes = todaysTimes.split('-');
+
+              classTimes[0] = Number(classTimes[0]);
+              classTimes[1] = Number(classTimes[1]);
+
+              //console.log("classTimes: " + classTimes[0] + ", " + classTimes[1]);
+
+              if (classTimes[0] <= currentTime && currentTime <= classTimes[1])
+              {
+                  var r = {
+                      id: rooms[i].id,
+                      name: rooms[i].name
+                  };
+                  list.push(r);
+              }
+          }
+      }
+  }
+  return list;
+}
+
+function listAll() {
   var rooms = roomModel.getRooms();
   var list = [];
 
@@ -20,6 +92,7 @@ function list() {
       };
       list.push(r);
   }
+
   return list;
 }
 
