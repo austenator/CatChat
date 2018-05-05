@@ -14,24 +14,41 @@ var express = require('express');
 var app = express();
 var server = require('http').createServer(app);
 var io = require('socket.io').listen(server);
+app.set('view engine', 'ejs');
 
 // Data controllers
 var roomController = require('./controller/rooms-controller.js');
-var rooms = roomController.listAll();
-var lobby = "lobby";
-
 var messagesController = require('./controller/messages-controller.js');
+
+var lobby = "lobby";
+const LOGS_PATH = path.join(__dirname,'messages');
+
+var rooms = roomController.listAll();
 messagesController.initFileStorage(rooms);
 
 rooms = roomController.list();
 
 // Routing
+app.get('/logs', messagesController.handleLogPopulation);
+app.get('/', getHome);
+app.get('/logs/log', messagesController.getLogByName);
 app.use(express.static(path.join(__dirname, 'public')));
+app.get('*', getNotFound);
 
 // Listen
 server.listen(PORT, function () {
   console.log('Server listening at port %d.', PORT);
 });
+
+function getHome(req,res){
+  res.statusCode = 200;
+  res.render('home');
+}
+
+function getNotFound(req,res){
+  res.statusCode=404;
+  res.render('notFound');
+}
 
 // Track how many users have connected
 var connected = 0;
