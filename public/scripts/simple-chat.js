@@ -1,5 +1,8 @@
 // This are the client side scripts
-
+$(document).ready(function() {
+  $('a.active').removeClass('active');
+  $('a[href="' + location.pathname + '"]').closest('a').addClass('active');
+});
 // Create the socket.io client
 var socket = io();
 var roomId = "lobby";
@@ -65,7 +68,8 @@ function sendOtherMessage(user_name, data){
 socket.on('connect', function(){
   // call the server-side function 'adduser' and send one parameter (value of prompt)
   // TODO > sanitize input
-  thisUsername = prompt("What's your name?").toUpperCase();
+  // thisUsername = prompt("What's your name?").toUpperCase();
+  thisUsername = 'REMOVE THIS AND ADD THE ABOVE IN';
   socket.emit('adduser', thisUsername);
 });
 

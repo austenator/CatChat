@@ -1,22 +1,12 @@
 <!doctype html>
 <html>
   <head>
-    <title>Cat Chat</title>
-    <link href="simple-chat.css" type="text/css" rel="stylesheet">
-    <link rel="icon" type="image/png" href="/images/favicon-16x16.png" sizes="16x16" />
-    <link rel="icon" type="image/png" href="/images/favicon-32x32.png" sizes="32x32" />
-
+    <% include partials/header.ejs %>
   </head>
   <body>
-    <div class="jumbotron jumbotron-fluid rounded">
-      <div class="container">
-        <h1 class="display-4">
-          <img id='logo' src="images/logo_1.png" class="img-responsive" alt="CatChat Logo">
-          Cat Chat
-        </h1>
-        <p class="lead">A university chatroom based on your class.</p>
-      </div>
-    </div>
+    <% include partials/banner.ejs %>
+    <% include partials/navbar.ejs %>
+
     <div id="set-name-controls">
       <div class="input-group">
         <div class="input-group-prepend">
@@ -59,13 +49,6 @@
         </div>
       </div>
     </div>
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"  integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="simple-chat.js" type="application/javascript"></script>
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <!-- jQuery library -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <% include partials/scripts.ejs %>
   </body>
 </html>

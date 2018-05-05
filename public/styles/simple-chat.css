@@ -7,6 +7,7 @@
 .jumbotron.jumbotron-fluid{
   padding-top: 20px;
   padding-bottom: 10px;
+  margin-bottom:0;
 }
 
 /* Chat shit */
@@ -90,7 +91,7 @@ ul#message-log > li.other-message {
   margin: 24px;
   max-width: 350px;
 }
-/* 
+/*
 #room-list{
   cursor: pointer;
 } */

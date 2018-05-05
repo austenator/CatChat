@@ -1,0 +1,26 @@
+<!doctype html>
+<html>
+  <head>
+    <% include partials/header.ejs %>
+  </head>
+  <body>
+    <% include partials/banner.ejs %>
+    <% include partials/navbar.ejs %>
+
+    <div class="container m-4" >
+      <div class="row">
+        <div class="col-sm-8 offset-sm-2 border">
+          <p class="lead text-center">Message Logs:</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-8 offset-sm-2  border px-0" id="logs-container">
+          <% for (var i = 0; i < logs.length; i++) { %>
+            <a href="/logs/log?name=<%=logs[i]%>" class="btn btn-link btn-block" role="button"><%= logs[i]%></a>
+          <% } %>
+        </div>
+      </div>
+    </div>
+    <% include partials/scripts.ejs %>
+  </body>
+</html>
