@@ -1,158 +1,78 @@
 // This are the client side scripts
-$(document).ready(function() {
-  $('a.active').removeClass('active');
-  $('a[href="' + location.pathname + '"]').closest('a').addClass('active');
-});
-// Create the socket.io client
+
+// // Create the socket.io client
 var socket = io();
 var roomId = "lobby";
-var thisUsername = "user";
-
-function sendMessage(list_item){
-  list_item.appendTo('#message-log');
-  $("#message-log").scrollTop($("#message-log")[0].scrollHeight);
-  return;
-}
-
-function sendServerMessage(data){
-  sendOtherMessage('SERVER', data);
-}
-
-function sendUserMessage(user_name, data){
-  var li = $('<li>')
-    .addClass('user-message');
-
-  var header = $('<div>')
-    .addClass('user-message-header')
-    .appendTo(li);
-
-  var body = $('<div>')
-    .addClass('user-message-body')
-    .appendTo(li);
-
-  var user = $('<p>')
-    .text(user_name.toUpperCase())
-    .appendTo(header);
-
-  var message =$('<span>')
-    .text(data)
-    .appendTo(body);
-
-  sendMessage(li);
-}
-
-function sendOtherMessage(user_name, data){
-  var li = $('<li>')
-    .addClass('other-message');
-
-  var header = $('<div>')
-    .addClass('other-message-header')
-    .appendTo(li);
-
-  var body = $('<div>')
-    .addClass('other-message-body')
-    .appendTo(li);
-
-  var user = $('<p>')
-    .text(user_name.toUpperCase())
-    .appendTo(header);
-
-  var message =$('<span>')
-    .text(data)
-    .appendTo(body);
-
-  sendMessage(li, header, body);
-}
-
-// on connection to server, ask for user's name with an anonymous callback
-socket.on('connect', function(){
-  // call the server-side function 'adduser' and send one parameter (value of prompt)
-  // TODO > sanitize input
-  // thisUsername = prompt("What's your name?").toUpperCase();
-  thisUsername = 'REMOVE THIS AND ADD THE ABOVE IN';
-  socket.emit('adduser', thisUsername);
-});
-
-// listener, whenever the server emits 'updatechat', this updates the chat body
-socket.on('updatechat', function (username, data) {
-  // console.log("Update received: "+ username +", " + data);
-  if(username == thisUsername){
-    sendUserMessage(username,data);
-  } else if(username == 'SERVER'){
-    sendServerMessage(data);
-  } else {
-    sendOtherMessage(username, data);
+var thisUsername = "Default Username";
+$(document).ready(function() {
+  function sendMessage(list_item){
+    list_item.appendTo('#message-log');
+    $("#message-log").scrollTop($("#message-log")[0].scrollHeight);
+    return;
   }
-});
 
-// listener, whenever the server emits 'updaterooms', this updates the room the client is in
-socket.on('updaterooms', function(rooms, current_room) {
-  $('#room-list').empty();
-  var ul = $('<ul>')
-    .addClass('list-group-flush px-0');
+  function sendServerMessage(data){
+    sendOtherMessage('SERVER', data);
+  }
 
-  $.each(rooms, function(key, value) {
+  function sendUserMessage(user_name, data){
     var li = $('<li>')
-      .addClass('list-group-item chatroom');
+      .addClass('user-message');
 
-    if(value.id == current_room){
-      li.append('<p>' + value.name + '</p>');
-      $('#current-room').html(value.name);
-    }
-    else {
-      li.append('<p><a href="#" onclick="switchRoom(\''+value.id+'\')">' + value.name + '</a></p>');
-    }
+    var header = $('<div>')
+      .addClass('user-message-header')
+      .appendTo(li);
 
-    li.appendTo(ul);
-  });
-  ul.appendTo('#room-list');
+    var body = $('<div>')
+      .addClass('user-message-body')
+      .appendTo(li);
 
-});
+    var user = $('<p>')
+      .text(user_name.toUpperCase())
+      .appendTo(header);
 
-//server is letting the client know that they have changed rooms
-// and is providing a log of messages
-socket.on('switchRoom', function(messages) {
-  $('#message-log').empty();
-  //console.log(messages);
-  for (var i = 0; i < messages.length; i++)
-  {
-    //console.log(messages[i].user + ", " + messages[i].data);
-    if(messages[i].user == thisUsername){
-      sendUserMessage(messages[i].user,messages[i].data);
-    } else if(messages[i].user == 'SERVER'){
-      sendServerMessage(messages[i].data);
-    } else {
-      sendOtherMessage(messages[i].user, messages[i].data);
-    }
+    var message =$('<span>')
+      .text(data)
+      .appendTo(body);
+
+    sendMessage(li);
   }
 
-});
+  function sendOtherMessage(user_name, data){
+    var li = $('<li>')
+      .addClass('other-message');
 
-// A user has changed their name, display message.
-// TODO, only show changes for users in this user's room.
-socket.on('changed-name', function(old_name, new_name) {
-  thisUsername = new_name;
-  var message = old_name + " changed name to "+ new_name + "!";
-  sendServerMessage(message);
-});
+    var header = $('<div>')
+      .addClass('other-message-header')
+      .appendTo(li);
 
-function switchRoom(room){
-  socket.emit('switchRoom', room);
-}
+    var body = $('<div>')
+      .addClass('other-message-body')
+      .appendTo(li);
 
-// On load of page.
-$(function(){
+    var user = $('<p>')
+      .text(user_name.toUpperCase())
+      .appendTo(header);
+
+    var message =$('<span>')
+      .text(data)
+      .appendTo(body);
+
+    sendMessage(li, header, body);
+  }
+
   function sendChat(){
     var message = $('#chat-text').val();
     if(message){
       $('#chat-text').val('');
 
       // Emit a 'sendchat' and give it the message to send.
-      // TODO > parse for script injection shit?
+      // TODO > parse for script injection
       socket.emit('sendchat', message);
     }
     return;
   }
+
   // when the client clicks SEND
   $('#chat-send').click( function() {
     sendChat();
@@ -171,8 +91,9 @@ $(function(){
     // console.log("Changing name: " + thisUsername + ", " + newName);
     if (newName != "" && newName != thisUsername)
     {
-      thisUsername = newName;
-      socket.emit('name', thisUsername.toUpperCase());
+      // console.log('Changed name to ' + newName + ' on client side.');
+      thisUsername = newName.toUpperCase();
+      socket.emit('name', thisUsername);
     }
     else
     {
@@ -193,4 +114,82 @@ $(function(){
       setName();
     }
   });
+
+
+  // on connection to server, ask for user's name with an anonymous callback
+  socket.on('connect', function(){
+    // call the server-side function 'adduser' and send one parameter (value of prompt)
+    // TODO > sanitize input
+    // thisUsername = prompt("What's your name?").toUpperCase();
+    console.log('Connection...');
+    socket.emit('adduser', thisUsername);
+  });
+
+  // listener, whenever the server emits 'updatechat', this updates the chat body
+  socket.on('updatechat', function (username, data) {
+    // console.log("Message received from "+ username +" with data: " + data);
+    // console.log('thisUsername is ' + thisUsername);
+    if(username == thisUsername){
+      sendUserMessage(username,data);
+    } else if(username == 'SERVER'){
+      sendServerMessage(data);
+    } else {
+      sendOtherMessage(username, data);
+    }
+  });
+
+  // listener, whenever the server emits 'updaterooms', this updates the room the client is in
+  socket.on('updaterooms', function(rooms, current_room) {
+    $('#room-list').empty();
+    var ul = $('<ul>')
+      .addClass('list-group-flush px-0');
+
+    $.each(rooms, function(key, value) {
+      var li = $('<li>')
+        .addClass('list-group-item chatroom');
+
+      if(value.id == current_room){
+        li.append('<p>' + value.name + '</p>');
+        $('#current-room').html(value.name);
+      }
+      else {
+        li.append('<p><a href="#" onclick="switchRoom(\''+value.id+'\')">' + value.name + '</a></p>');
+      }
+
+      li.appendTo(ul);
+    });
+    ul.appendTo('#room-list');
+
+  });
+
+  //server is letting the client know that they have changed rooms
+  // and is providing a log of messages
+  socket.on('switchRoom', function(messages) {
+    $('#message-log').empty();
+    //console.log(messages);
+    for (var i = 0; i < messages.length; i++)
+    {
+      //console.log(messages[i].user + ", " + messages[i].data);
+      if(messages[i].user == thisUsername){
+        sendUserMessage(messages[i].user,messages[i].data);
+      } else if(messages[i].user == 'SERVER'){
+        sendServerMessage(messages[i].data);
+      } else {
+        sendOtherMessage(messages[i].user, messages[i].data);
+      }
+    }
+
+  });
+
+  // A user has changed their name, display message.
+  // TODO, only show changes for users in this user's room.
+  socket.on('changed-name', function(old_name, new_name) {
+    var message = old_name + " changed name to "+ new_name + "!";
+    sendServerMessage(message);
+  });
+
+
 });
+function switchRoom(room){
+  socket.emit('switchRoom', room);
+}

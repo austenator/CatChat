@@ -12,9 +12,9 @@ var express = require('express');
 
 // Set up server
 var app = express();
+app.set('view engine', 'ejs');
 var server = require('http').createServer(app);
 var io = require('socket.io').listen(server);
-app.set('view engine', 'ejs');
 
 // Data controllers
 var roomController = require('./controller/rooms-controller.js');
@@ -95,6 +95,7 @@ io.on('connection', function(socket){
       }
       else
       {
+        // console.log('Using ' + socket.username + ' to send ' + data + ' on server side.');
         io.sockets.in(socket.room).emit('updatechat', socket.username, data);
         messagesController.storeMessage(socket.username, socket.room, data);
       }
@@ -102,6 +103,8 @@ io.on('connection', function(socket){
 
   socket.on('name', function(new_name){
     var old_name = socket.username;
+    // console.log('Changing name from ' + socket.username + ' to ' + new_name);
+
     socket.username = new_name;
     io.emit('changed-name', old_name, new_name);
   });
@@ -148,20 +151,20 @@ io.on('connection', function(socket){
 
   function updateRooms() {
       var newRooms = roomController.list();
-      console.log(newRooms);
+      // console.log(newRooms);
       for (var i = 0; i < rooms.length; i++)
       {
           var roomStillOpen = false;
           for (var j = 0; j < newRooms.length; j++)
           {
-              console.log("comparing new "+newRooms[j].id + " to old "+rooms[i].id);
-              console.log(newRooms[j].id == rooms[i].id);
+              // console.log("comparing new "+newRooms[j].id + " to old "+rooms[i].id);
+              // console.log(newRooms[j].id == rooms[i].id);
               if (newRooms[j].id == rooms[i].id)
               {
                   roomStillOpen = true;
               }
 
-              console.log("roomflag = " +roomStillOpen);
+              // console.log("roomflag = " +roomStillOpen);
           }
           if (!roomStillOpen)
           {

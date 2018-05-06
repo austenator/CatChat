@@ -12,7 +12,7 @@
         <div class="input-group-prepend">
           <span class="input-group-text">Username:</span>
         </div>
-        <input id="user-name" type="text" class="form-control">
+        <input id="user-name" type="text" autocomplete='off' class="form-control">
         <div class="input-group-append">
           <button id="set-name" class="btn btn-outline-info" type="button">Set</button>
         </div>
@@ -39,7 +39,7 @@
                   <div class="input-group-prepend">
                     <span  class="input-group-text">Chat:</span>
                   </div>
-                  <input id="chat-text" type="text" class="form-control">
+                  <input id="chat-text" type="text" autocomplete='off' class="form-control">
                   <div class="input-group-append">
                     <button id="chat-send" class="btn btn-outline-info" type="button">Send</button>
                   </div>
@@ -50,5 +50,7 @@
       </div>
     </div>
     <% include partials/scripts.ejs %>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/scripts/simple-chat.js" type="application/javascript"></script>
   </body>
 </html>
