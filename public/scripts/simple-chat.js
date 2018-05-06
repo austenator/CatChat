@@ -102,6 +102,18 @@ $(document).ready(function() {
     return;
   }
 
+  socket.on('sanitizeName', function(sanitizedName){
+    thisUsername = sanitizedName;
+  });
+
+  // A user has changed their name, display message.
+  // TODO, only show changes for users in this user's room.
+  socket.on('changed-name', function(old_name, new_name) {
+    // thisUsername = new_name;
+    var message = old_name + " changed name to "+ new_name + "!";
+    sendServerMessage(message);
+  });
+
   // When the user set's their name by clicking the 'Set' button.
   $('#set-name').on('click', function() {
     setName();
@@ -114,7 +126,6 @@ $(document).ready(function() {
       setName();
     }
   });
-
 
   // on connection to server, ask for user's name with an anonymous callback
   socket.on('connect', function(){
@@ -181,12 +192,7 @@ $(document).ready(function() {
 
   });
 
-  // A user has changed their name, display message.
-  // TODO, only show changes for users in this user's room.
-  socket.on('changed-name', function(old_name, new_name) {
-    var message = old_name + " changed name to "+ new_name + "!";
-    sendServerMessage(message);
-  });
+
 
 
 });

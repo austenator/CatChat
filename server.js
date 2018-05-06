@@ -9,6 +9,7 @@ const PORT = 3000;
 var fs = require('fs');
 var path = require('path');
 var express = require('express');
+var sanitize = require('./helpers/escapeHTML');
 
 // Set up server
 var app = express();
@@ -102,12 +103,18 @@ io.on('connection', function(socket){
   });
 
   socket.on('name', function(new_name){
+    var sanitizedName = sanitize.escapeHTML(new_name);
     var old_name = socket.username;
     // console.log('Changing name from ' + socket.username + ' to ' + new_name);
 
-    socket.username = new_name;
-    io.emit('changed-name', old_name, new_name);
+    socket.username = sanitizedName;
+    socket.emit('sanitizeName', sanitizedName);
+    io.emit('changed-name', old_name, sanitizedName);
   });
+
+  // socket.on('sanitize', function(raw){
+  //   socket.emit('sanitizeName', sanitize.escapeHTML(raw));
+  // });
 
   socket.on('switchRoom', function(newroom){
     var newRoomName = "";
