@@ -118,5 +118,29 @@
         "thursday":"0830-0920",
         "friday":"",
         "saturday":""
+    },
+    {
+        "id":"cis525-a",
+        "name":"CIS 525: A",
+        "description":"Intro to Networking",
+        "sunday":"0000-2359",
+        "monday":"",
+        "tuesday":"0830-0920",
+        "wednesday":"",
+        "thursday":"0830-0920",
+        "friday":"",
+        "saturday":""
+    },
+    {
+        "id":"cis525-b",
+        "name":"CIS 525: B",
+        "description":"Intro to Networking",
+        "sunday":"0000-2359",
+        "monday":"",
+        "tuesday":"0830-0920",
+        "wednesday":"",
+        "thursday":"0830-0920",
+        "friday":"",
+        "saturday":""
     }
 ]

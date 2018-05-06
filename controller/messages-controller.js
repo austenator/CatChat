@@ -40,7 +40,7 @@ function getLogByName(req,res){
 function handleLogPopulation(req,res){
   var logs = [];
   fs.readdirSync(LOGS_PATH).forEach(file => {
-    console.log(file);
+    // console.log(file);
     logs.push(file);
   });
   res.statusCode=200;

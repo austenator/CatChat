@@ -9,5 +9,10 @@
 function escapeHTML(html) {
   // String.prototype.replace can take a regular expression as an argument.
   // the regular expression /</g means "all < in the string"
-  return html.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  // return html.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  return html.replace(/</g, '').replace(/>/g, '');
+}
+
+module.exports = {
+  escapeHTML:escapeHTML
 }
