@@ -3,19 +3,20 @@
 // // Create the socket.io client
 var socket = io();
 var roomId = "lobby";
-var thisUsername = "Default Username";
+var thisUsername = "DEFAULT USERNAME";
 $(document).ready(function() {
-  function sendMessage(list_item){
-    list_item.appendTo('#message-log');
+
+  function sendMessage(listItem){
+    listItem.appendTo('#message-log');
     $("#message-log").scrollTop($("#message-log")[0].scrollHeight);
     return;
   }
 
-  function sendServerMessage(data){
-    sendOtherMessage('SERVER', data);
+  function sendServerMessage(message){
+    sendOtherMessage('SERVER', message);
   }
 
-  function sendUserMessage(user_name, data){
+  function sendUserMessage(userName, message){
     var li = $('<li>')
       .addClass('user-message');
 
@@ -28,17 +29,17 @@ $(document).ready(function() {
       .appendTo(li);
 
     var user = $('<p>')
-      .text(user_name.toUpperCase())
+      .text(userName.toUpperCase())
       .appendTo(header);
 
     var message =$('<span>')
-      .text(data)
+      .text(message)
       .appendTo(body);
 
     sendMessage(li);
   }
 
-  function sendOtherMessage(user_name, data){
+  function sendOtherMessage(userName, message){
     var li = $('<li>')
       .addClass('other-message');
 
@@ -51,70 +52,78 @@ $(document).ready(function() {
       .appendTo(li);
 
     var user = $('<p>')
-      .text(user_name.toUpperCase())
+      .text(userName.toUpperCase())
       .appendTo(header);
 
     var message =$('<span>')
-      .text(data)
+      .text(message)
       .appendTo(body);
 
     sendMessage(li, header, body);
   }
 
+  // Sends a message to the server to be broadcasted to the room.
   function sendChat(){
     var message = $('#chat-text').val();
     if(message){
       $('#chat-text').val('');
 
       // Emit a 'sendchat' and give it the message to send.
-      // TODO > parse for script injection
-      socket.emit('sendchat', message);
+      socket.emit('sendChat', message);
     }
-    return;
   }
 
-  // when the client clicks SEND
+  // Handles the send button click.
   $('#chat-send').click( function() {
     sendChat();
   });
 
-  // when the client hits ENTER on their keyboard
+  // Handles when the user is in the textbox and presses 'Enter'.
   $('#chat-text').keypress(function(e) {
     if(e.which == 13) {
       sendChat();
     }
   });
 
-  // Set's the client's name.
-  function setName(){
-    var newName = $('#user-name').val();
-    // console.log("Changing name: " + thisUsername + ", " + newName);
-    if (newName != "" && newName != thisUsername)
-    {
-      // console.log('Changed name to ' + newName + ' on client side.');
-      thisUsername = newName.toUpperCase();
-      socket.emit('name', thisUsername);
-    }
-    else
-    {
-      $('#user-name').val(thisUsername);
-    }
-    return;
-  }
-
+/**
+ * Updates the user's username with the sanitized version.
+ * @param  {String} sanitizedName Sanitized username.
+ * @return {undefined}
+ */
   socket.on('sanitizeName', function(sanitizedName){
     thisUsername = sanitizedName;
   });
 
-  // A user has changed their name, display message.
-  // TODO, only show changes for users in this user's room.
-  socket.on('changed-name', function(old_name, new_name) {
-    // thisUsername = new_name;
-    var message = old_name + " changed name to "+ new_name + "!";
+  /**
+   * Send a message describing who changed their username and to what.
+   * @param  {String} oldName The user's old name.
+   * @param  {String} newName The user's new name.
+   * @return {undefined}
+   */
+  socket.on('changedName', function(oldName, newName) {
+    var message = oldName + " changed name to "+ newName + "!";
     sendServerMessage(message);
   });
 
-  // When the user set's their name by clicking the 'Set' button.
+    // Handles the user setting a new name.
+    function setName(){
+      // Get the new name from the input box.
+      var newName = $('#user-name').val();
+      // If it is truthy and not equal to their current username, change it.
+      if (newName && newName !== thisUsername)
+      {
+        // Update the username on the client side.
+        thisUsername = newName.toUpperCase();
+        socket.emit('updateName', thisUsername);
+      }
+      else
+      {
+        // Keep/put their old username in the box.
+        $('#user-name').val(thisUsername);
+      }
+    }
+
+  // When the user sets their name by clicking the 'Set' button.
   $('#set-name').on('click', function() {
     setName();
   });
@@ -127,30 +136,40 @@ $(document).ready(function() {
     }
   });
 
-  // on connection to server, ask for user's name with an anonymous callback
+  /**
+   * Handles when the client connects to the server.
+   * @return {undefined}
+   */
   socket.on('connect', function(){
-    // call the server-side function 'adduser' and send one parameter (value of prompt)
-    // TODO > sanitize input
-    // thisUsername = prompt("What's your name?").toUpperCase();
-    console.log('Connection...');
-    socket.emit('adduser', thisUsername);
+    // Add the client with the default username.
+    socket.emit('addUser', thisUsername);
   });
 
-  // listener, whenever the server emits 'updatechat', this updates the chat body
-  socket.on('updatechat', function (username, data) {
-    // console.log("Message received from "+ username +" with data: " + data);
-    // console.log('thisUsername is ' + thisUsername);
-    if(username == thisUsername){
-      sendUserMessage(username,data);
-    } else if(username == 'SERVER'){
-      sendServerMessage(data);
+  /**
+   * Updates the chat room with a new message and places it on the correct
+   * side of the message box.
+   * @param  {String} userName The user's name who is sending the message.
+   * @param  {String} message The user's message.
+   * @return {undefined}
+   */
+  socket.on('updateChat', function (userName, message) {
+    if(userName === thisUsername){
+      sendUserMessage(userName, message);
+    } else if(userName === 'SERVER'){
+      sendServerMessage(message);
     } else {
-      sendOtherMessage(username, data);
+      sendOtherMessage(userName, message);
     }
   });
 
   // listener, whenever the server emits 'updaterooms', this updates the room the client is in
-  socket.on('updaterooms', function(rooms, current_room) {
+  /**
+   * Updates the room list to reflect room change.
+   * @param  {String[]} rooms All the currently open rooms.
+   * @param  {String} currentRoom The current room the user is in.
+   * @return {undefined}
+   */
+  socket.on('updateRooms', function(rooms, currentRoom) {
     $('#room-list').empty();
     var ul = $('<ul>')
       .addClass('list-group-flush px-0');
@@ -159,7 +178,7 @@ $(document).ready(function() {
       var li = $('<li>')
         .addClass('list-group-item chatroom');
 
-      if(value.id == current_room){
+      if(value.id == currentRoom){
         li.append('<p>' + value.name + '</p>');
         $('#current-room').html(value.name);
       }
@@ -170,17 +189,21 @@ $(document).ready(function() {
       li.appendTo(ul);
     });
     ul.appendTo('#room-list');
-
   });
 
-  //server is letting the client know that they have changed rooms
-  // and is providing a log of messages
+  /**
+   * Updates the user's message log with messages from the room
+   * they switched to and alerting the user they switched rooms
+   * successfully.
+   * @param  {String[]} messages An array of previous messages in the chatroom.
+   * @return {undefined}
+   */
   socket.on('switchRoom', function(messages) {
     $('#message-log').empty();
-    //console.log(messages);
+
+    // Fill the message log with previous chatroom messages from the server.
     for (var i = 0; i < messages.length; i++)
     {
-      //console.log(messages[i].user + ", " + messages[i].data);
       if(messages[i].user == thisUsername){
         sendUserMessage(messages[i].user,messages[i].data);
       } else if(messages[i].user == 'SERVER'){
@@ -189,13 +212,9 @@ $(document).ready(function() {
         sendOtherMessage(messages[i].user, messages[i].data);
       }
     }
-
   });
-
-
-
-
 });
+
 function switchRoom(room){
   socket.emit('switchRoom', room);
 }

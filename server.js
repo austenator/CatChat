@@ -2,157 +2,170 @@
  * Server for a simple chat engine
  */
 
-// Constants
-const PORT = 3000;
-
-// Requires
+// Requires:
 var fs = require('fs');
 var path = require('path');
 var express = require('express');
 var sanitize = require('./helpers/escapeHTML');
 
-// Set up server
+// Constants:
+const PORT = process.env.PORT || 3000;
+var lobby = "lobby";
+const LOGS_PATH = path.join(__dirname,'messages');
+
+// Set up express application and server.
 var app = express();
 app.set('view engine', 'ejs');
 var server = require('http').createServer(app);
 var io = require('socket.io').listen(server);
 
-// Data controllers
+// Initialize controllers:
 var roomController = require('./controller/rooms-controller.js');
 var messagesController = require('./controller/messages-controller.js');
 
-var lobby = "lobby";
-const LOGS_PATH = path.join(__dirname,'messages');
+// Read in all the class rooms.
+var availableRooms = roomController.listAll();
+messagesController.initFileStorage(availableRooms);
+var rooms = roomController.list();
 
-var rooms = roomController.listAll();
-messagesController.initFileStorage(rooms);
-
-rooms = roomController.list();
-
-// Routing
+// Routes:
 app.get('/logs', messagesController.handleLogPopulation);
 app.get('/', getHome);
 app.get('/logs/log', messagesController.getLogByName);
 app.use(express.static(path.join(__dirname, 'public')));
 app.get('*', getNotFound);
 
-// Listen
+// Listen:
 server.listen(PORT, function () {
   console.log('Server listening at port %d.', PORT);
 });
 
+// Route for getting the home view.
 function getHome(req,res){
   res.statusCode = 200;
   res.render('home');
 }
 
+// Route for getting a 404 not found view.
 function getNotFound(req,res){
   res.statusCode=404;
   res.render('notFound');
 }
-
-// Track how many users have connected
-var connected = 0;
-
 // usernames which are currently connected to the chat
 var usernames = [];
 
-/** event hander 'connection'
- * handles a new user connecting to the websocket server
+/**
+ * Handles a new connection of a user.
+ * @param  {io.Socket} socket The user's socket.
+ * @return {undefined}
  */
 io.on('connection', function(socket){
-  // Set the user properties
-  // var name = 'User ' + connected;
+  // Initialize the user to be in the lobby.
   var currentRoom = 'lobby';
 
-  // Count the user
-  connected++;
-
-  // when the client emits 'adduser', this listens and executes
-  socket.on('adduser', function(username){
-    // store the username in the socket session for this client
+  // When the client emits 'adduser', this listens and executes.
+  socket.on('addUser', function(username){
+    // Store the username in the socket session for this client.
     socket.username = username;
-    // store the room name in the socket session for this client
+    // Store the room name in the socket session for this client.
     socket.room = currentRoom;
-    // add the client's username to the global list
+    // Add the client's username to the global list.
     usernames.push(username);
-    // name = username;
-    // send client to room 1
+    // Send user to lobby.
     socket.join(currentRoom);
-    // echo to client they've connected
-    socket.emit('updatechat', 'SERVER', 'Welcome to Cat Chat. Please select your class to the left.');
-    // echo to room 1 that a person has connected to their room
-    socket.broadcast.to(currentRoom).emit('updatechat', 'SERVER', username + ' has connected to this room.');
+    // Echo to user they've connected.
+    socket.emit('updateChat', 'SERVER', 'Welcome to Cat Chat. Please select your class to the left.');
+    // Echo to lobby that a person has connected to their room.
+    socket.broadcast.to(currentRoom).emit('updateChat', 'SERVER', username + ' has connected to this room.');
     updateRooms();
-    socket.emit('updaterooms', rooms, currentRoom);
+    socket.emit('updateRooms', rooms, currentRoom);
   });
 
-  // when the client emits 'sendchat', this listens and executes
-  socket.on('sendchat', function (data) {
-      // we tell the client to execute 'updatechat' with 2 parameters
+  /**
+   * Sends a user's chat to their current room.
+   * @param  {String} data The message the user is trying to send.
+   * @return {undefined}
+   */
+  socket.on('sendChat', function (message) {
+      // If the user is trying to send a message in the lobby, alert them they cannot.
       if (socket.room == "lobby")
       {
-        socket.emit('updatechat', 'SERVER', 'Talking isn\'t allowed in the Lobby. Please go to class.');
+        socket.emit('updateChat', 'SERVER', 'Talking isn\'t allowed in the Lobby. Please select a class.');
       }
       else
       {
-        // console.log('Using ' + socket.username + ' to send ' + data + ' on server side.');
-        io.sockets.in(socket.room).emit('updatechat', socket.username, data);
-        messagesController.storeMessage(socket.username, socket.room, data);
+        // Emit the message to everyone in the room.
+        io.sockets.in(socket.room).emit('updateChat', socket.username, message);
+        // Store the message.
+        messagesController.storeMessage(socket.username, socket.room, message);
       }
   });
-
-  socket.on('name', function(new_name){
-    var sanitizedName = sanitize.escapeHTML(new_name);
-    var old_name = socket.username;
-    // console.log('Changing name from ' + socket.username + ' to ' + new_name);
-
+/**
+ * Sanitizes the given name and updates their name on the socket connection.
+ * @param  {String} newName The raw name from the UI in need of sanitization.
+ * @return {undefined}
+ */
+  socket.on('updateName', function(newName){
+    // Sanitize the name with a helper function.
+    var sanitizedName = sanitize.escapeHTML(newName);
+    var oldName = socket.username;
+    // Update the name on the user's socket.
     socket.username = sanitizedName;
+    // Update the user's name on the client side.
     socket.emit('sanitizeName', sanitizedName);
-    io.emit('changed-name', old_name, sanitizedName);
+    // Alert everyone in the same room that the user changed their name.
+    io.emit('changedName', oldName, sanitizedName);
   });
 
-  // socket.on('sanitize', function(raw){
-  //   socket.emit('sanitizeName', sanitize.escapeHTML(raw));
-  // });
-
-  socket.on('switchRoom', function(newroom){
+  /**
+   * Updates the server's information on which room the user is in.
+   * @param  {String} newRoom The room name to switch to.
+   * @return {undefined}
+   */
+  socket.on('switchRoom', function(newRoom){
     var newRoomName = "";
 
     for (var i = 0; i < rooms.length; i++)
     {
-      if (rooms[i].id == newroom)
+      if (rooms[i].id == newRoom)
       {
         newRoomName = rooms[i].name;
         break;
       }
     }
 
-    // leave the current room (stored in session)
+    // Leave the current room (stored in session).
     socket.leave(socket.room);
-    // join new room, received as function parameter
-    socket.join(newroom);
-    socket.emit('switchRoom', messagesController.getMessagesByRoomId(newroom));
-    socket.emit('updatechat', 'SERVER', 'You have connected to '+ newRoomName + '!');
-    // sent message to OLD room
-    socket.broadcast.to(socket.room).emit('updatechat', 'SERVER', socket.username+' has left this room.');
-    // update socket session room title
-    socket.room = newroom;
-    socket.broadcast.to(newroom).emit('updatechat', 'SERVER', socket.username+' has joined this room.');
+    // Join new room.
+    socket.join(newRoom);
+    // Update the user's message log to reflect previous messages.
+    socket.emit('switchRoom', messagesController.getMessagesByRoomId(newRoom));
+    // Alert the user they have entered the room.
+    socket.emit('updateChat', 'SERVER', 'You have connected to '+ newRoomName + '!');
+    // Alert old room the user left.
+    socket.broadcast.to(socket.room).emit('updateChat', 'SERVER', socket.username+' has left this room.');
+    // Update socket session information.
+    socket.room = newRoom;
+    // Alert new room the user has joined.
+    socket.broadcast.to(newRoom).emit('updateChat', 'SERVER', socket.username+' has joined this room.');
+    // Update rooms on server side.
     updateRooms();
-    socket.emit('updaterooms', rooms, newroom);
-
-    currentRoom = newroom;
+    // Update the rooms list for the client to reflect the new room.
+    socket.emit('updateRooms', rooms, newRoom);
+    currentRoom = newRoom;
   });
 
-  // when the user disconnects.. perform this
+  /**
+   * Disconnects the user's socket connection.
+   * @return {undefined}
+   */
   socket.on('disconnect', function(){
-    // remove the username from global usernames list
+    // Remove the username from global usernames list.
     usernames = usernames.filter(e => e !== socket.username);
-    // update list of users in chat, client-side
-    io.sockets.emit('updateusers', usernames);
-    // echo globally that this client has left
-    socket.broadcast.emit('updatechat', 'SERVER', socket.username + ' has disconnected.');
+    // Update list of users in chat, client-side.
+    io.sockets.emit('updateUsers', usernames);
+    // Echo globally that this client has left.
+    socket.broadcast.emit('updateChat', 'SERVER', socket.username + ' has disconnected.');
     socket.leave(socket.room);
   });
 
@@ -181,14 +194,14 @@ io.on('connection', function(socket){
 
               if (clients.length > 0)
               {
-                socket.broadcast.to(rooms[i].id).emit('updatechat', 'SERVER', rooms[i].name+' has closed. The chat log will be available for download in a moment.');
+                socket.broadcast.to(rooms[i].id).emit('updateChat', 'SERVER', rooms[i].name+' has closed. The chat log will be available for download in a moment.');
                 // move everyone to Lobby
                 for (var k = 0; k < clients.length; k++)
                 {
                   clients[k].leave(rooms[i].id);
                   clients[k].join(lobby);
                   clients[k].emit('switchRoom', messagesController.getMessagesByRoomId(newroom));
-                  clients[k].emit('updatechat', 'SERVER', 'You have been moved to the lobby.');
+                  clients[k].emit('updateChat', 'SERVER', 'You have been moved to the lobby.');
                 }
                 // io.sockets.clients(rooms[i].id).forEach(function(s){
                 //     s.leave(rooms[i].id);
