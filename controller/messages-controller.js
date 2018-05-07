@@ -25,9 +25,15 @@ function getLogByName(req,res){
 
   // Make sure there is data in the file. Otherwise, alert the user.
   if(data){
+    jsonData = JSON.parse(data);
+    var log = "";
+    for (var i = 0; i< jsonData.length; i++) {
+      log += jsonData[i].user + ": " + jsonData[i].data + "\n";
+    }
     res.statusCode=200;
-    // TODO > Currently we are sending JSON, we need to format better on the page.
-    res.send(JSON.parse(data));
+    res.header('Content-Disposition', "filename=" + name.substr(0, name.length-5) + ".txt");
+    res.header("Content-Type", "text/plain");
+    res.send(log);
   } else{
     res.statusCode=200;
     res.send('There were no messages in that file.');
