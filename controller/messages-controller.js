@@ -31,6 +31,7 @@ function getLogByName(req,res){
       log += jsonData[i].user + ": " + jsonData[i].data + "\n";
     }
     res.statusCode=200;
+    res.header('Content-Disposition', "filename=" + name.substr(0, name.length-5) + ".txt");
     res.header("Content-Type", "text/plain");
     res.send(log);
   } else{
