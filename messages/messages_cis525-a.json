@@ -223,5 +223,20 @@
         "timestamp": 1525643927798,
         "user": "BEN",
         "data": "hey"
+    },
+    {
+        "timestamp": 1525664564185,
+        "user": "BOB",
+        "data": "hey"
+    },
+    {
+        "timestamp": 1525664570130,
+        "user": "CHAD2",
+        "data": "hey back"
+    },
+    {
+        "timestamp": 1525665482136,
+        "user": "DEFAULT USERNAME",
+        "data": "hey"
     }
 ]

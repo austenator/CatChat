@@ -114,7 +114,9 @@ io.on('connection', function(socket){
     // Update the user's name on the client side.
     socket.emit('sanitizeName', sanitizedName);
     // Alert everyone in the same room that the user changed their name.
-    io.emit('changedName', oldName, sanitizedName);
+    // io.emit('changedName', oldName, sanitizedName);
+    socket.broadcast.to(socket.room).emit('changedName', oldName, sanitizedName);
+    socket.emit('changedName', oldName, sanitizedName);
   });
 
   /**
@@ -165,7 +167,7 @@ io.on('connection', function(socket){
     // Update list of users in chat, client-side.
     io.sockets.emit('updateUsers', usernames);
     // Echo globally that this client has left.
-    socket.broadcast.emit('updateChat', 'SERVER', socket.username + ' has disconnected.');
+    socket.broadcast.to(socket.room).emit('updateChat', 'SERVER', socket.username + ' has disconnected.');
     socket.leave(socket.room);
   });
 
