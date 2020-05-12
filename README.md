@@ -16,3 +16,7 @@ To run the server, use the command:
 ```
 $ npm start
 ```
+
+Now navigate to http://localhost:3000/ to view the application.
+
+NOTE: rooms will not be available during non-school time periods.
